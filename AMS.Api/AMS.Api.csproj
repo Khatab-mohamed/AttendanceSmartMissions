@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\AMS.Application\AMS.Application.csproj" />
     <ProjectReference Include="..\AMS.Domain\AMS.Domain.csproj" />
     <ProjectReference Include="..\AMS.Infrastructure\AMS.Infrastructure.csproj" />
