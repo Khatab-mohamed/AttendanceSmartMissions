@@ -2,13 +2,15 @@
 
 namespace AMS.Domain.Entities.Authentication
 {
-    public abstract class User : Identity
+    public  class User  :IdentityUser
     {
 
-        [Required]
+     
+        public Guid Id { get; set; }
         public string FullName { get; set; }
 
         [Required]
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
         public int IdNumber { get; set; }
@@ -17,12 +19,5 @@ namespace AMS.Domain.Entities.Authentication
         [Required]
         public string Password { get; set; }
 
-
-        public abstract UserType Type { get; }
-
-        public Guid UserTypeId { get; set; }
-        public UserType UserType { get; set; }
-        public string IdentityId { get; set; }
-        public Identity Identity { get; set; }
     }
 }
