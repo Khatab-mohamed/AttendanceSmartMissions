@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AMS.Domain.Entities.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AMS.Api.Controllers
@@ -7,6 +8,31 @@ namespace AMS.Api.Controllers
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
-
+        // [HttpPost("register")]
+        // public async Task<IActionResult> Register(User request)
+        // {
+        //
+        //     var command = _mapper.Map<RegisterCommand>(request);
+        //
+        //     var authResult = await _mediator.Send(command);
+        //
+        //     return authResult.Match(
+        //         authenticateResult => Ok(_mapper.Map<AuthenticateResponse>(authenticateResult)),
+        //         Problem);
+        // }
+        //
+        //
+        // [HttpPost("login")]
+        // public async Task<IActionResult> Login(LoginRequest request)
+        // {
+        //     var query = _mapper.Map<LoginQuery>(request);
+        //
+        //     var authResult = await _mediator.Send(query);
+        //
+        //
+        //     return authResult.Match(
+        //         authenticateResult => Ok(_mapper.Map<AuthenticateResponse>(authenticateResult)),
+        //         Problem);
+        // }
     }
 }
