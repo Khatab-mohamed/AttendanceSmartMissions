@@ -1,15 +1,14 @@
-﻿ namespace AMS.Application.Services.Location;
+﻿using AMS.Domain.Helpers;
+using AMS.Domain.Helpers.Locations;
+
+namespace AMS.Application.Services.Location;
 
 public interface ILocationService
 
 {
-    IEnumerable<LocationDto> GetLocations();
-    //PagedList<User> GetUsers(UserResourceParameters authorsResourceParameters);
-    LocationDto GetLocations(Guid locationId);
-    IEnumerable<LocationDto> Locations(IEnumerable<Guid> locationsIds);
-    Task AddLocation(LocationForCreationDto locationDto);
-    Task DeleteLocation(LocationDto locationDto);
-    Task UpdateLocation(LocationDto locationDto);
-    bool LocationExists(Guid locationId);
+    PagedList<Domain.Entities.Location> GetLocations(LocationsResourceParameters locationsResourceParameters);
+    LocationDto GetLocation(Guid locationId);
+    LocationDto AddLocation(LocationForCreationDto location);
+    
     bool Save();
 }

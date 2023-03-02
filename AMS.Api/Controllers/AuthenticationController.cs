@@ -1,6 +1,5 @@
 ﻿using AMS.Domain.Entities.Authentication;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
 namespace AMS.Api.Controllers
 {

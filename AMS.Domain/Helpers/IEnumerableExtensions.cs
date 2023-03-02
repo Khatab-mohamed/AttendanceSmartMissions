@@ -1,4 +1,4 @@
-﻿namespace AMS.Application.Helpers
+﻿namespace AMS.Domain.Helpers
 {
     internal interface IEnumerableExtensions
     {

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AMS.Infrastructure.Persistence;
 
 namespace AMS.Infrastructure;
 

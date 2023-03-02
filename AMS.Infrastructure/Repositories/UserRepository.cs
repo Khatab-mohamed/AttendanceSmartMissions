@@ -1,4 +1,7 @@
-﻿namespace AMS.Infrastructure.Repositories
+﻿
+using AMS.Infrastructure.Persistence;
+
+namespace AMS.Infrastructure.Repositories
 {
     public class UserRepository : IUserRepository
     {

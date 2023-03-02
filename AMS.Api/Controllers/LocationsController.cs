@@ -1,33 +1,121 @@
-﻿using AMS.Application.DataTransferObjects;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using AMS.Domain.Entities;
 
-namespace AMS.Api.Controllers
+namespace AMS.Api.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class LocationsController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class LocationsController : ControllerBase
+    private readonly IUrlHelper _urlHelper;
+    private readonly ILocationService _locationService;
+    public LocationsController(IUrlHelper urlHelper,
+        ILocationService locationService)
     {
+        _urlHelper = urlHelper;
+        _locationService = locationService;
+    }
 
-        [HttpPost]
-        public ActionResult CreateAuthor(LocationForCreationDto author)
+
+
+    #region Done
+
+    [HttpPost]
+    public IActionResult CreateLocation([FromBody] LocationForCreationDto location)
+    {
+        if (location is null)
+            return BadRequest();
+
+
+
+        var addedLocation = _locationService.AddLocation(location);
+
+        if (!_locationService.Save())
+            throw new Exception("Creating an location failed on save.");
+
+
+
+        return CreatedAtRoute("GetLocation",
+            new { id = addedLocation.Id },
+            addedLocation);
+    }
+
+
+    [HttpGet(Name = "GetLocations")]
+    public IActionResult GetLocations(LocationsResourceParameters locationsResourceParameters)
+    {
+        var locationsFromRepo = _locationService.GetLocations(locationsResourceParameters);
+        var previousPageLink = locationsFromRepo.HasPrevious ?
+            CreateLocationResourceUri(locationsResourceParameters,
+                ResourceUriType.PreviousPage) : null;
+
+        var nextPageLink = locationsFromRepo.HasNext ?
+            CreateLocationResourceUri(locationsResourceParameters,
+                ResourceUriType.NextPage) : null;
+
+        var paginationMetadata = new
         {
-            // var authorEntity = _mapper.Map<Entities.Author>(author);
-            // _courseLibraryRepository.AddAuthor(authorEntity);
-            // _courseLibraryRepository.Save();
-            //
-            // var authorToReturn = _mapper.Map<AuthorDto>(authorEntity);
-            //
-            // var links = CreateLinksForAuthor(authorToReturn.Id, null);
-            //
-            // var linkedResourceToReturn = authorToReturn.ShapeData(null)
-            //     as IDictionary<string, object>;
-            // linkedResourceToReturn.Add("links", links);
-            //
-            // return CreatedAtRoute("GetAuthor",
-            //     new { authorId = linkedResourceToReturn["Id"] },
-            //     linkedResourceToReturn);
-            return Ok();
+            totalCount = locationsFromRepo.TotalCount,
+            pageSize = locationsFromRepo.PageSize,
+            currentPage = locationsFromRepo.CurrentPage,
+            totalPages = locationsFromRepo.TotalPages,
+            previousPageLink = previousPageLink,
+            nextPageLink = nextPageLink
+        };
+
+        Response.Headers.Add("X-Pagination",
+            Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetadata));
+
+
+        return Ok(locationsFromRepo);
+    }
+
+    [HttpGet("{id:guid}", Name = "GetLocation")]
+    public IActionResult GetLocation(Guid id)
+    {
+        var location = _locationService.GetLocation(id);
+
+        if (location is null)
+            return NotFound();
+
+        return Ok(location);
+    }
+
+    private string? CreateLocationResourceUri(
+        LocationsResourceParameters locationsResourceParameters,
+        ResourceUriType type)
+    {
+        switch (type)
+        {
+            case ResourceUriType.PreviousPage:
+                return _urlHelper.Link("GetLocations",
+                    new
+                    {
+                        searchQuery = locationsResourceParameters.SearchQuery,
+                        pageNumber = locationsResourceParameters.PageNumber - 1,
+                        pageSize = locationsResourceParameters.PageSize
+                    });
+            case ResourceUriType.NextPage:
+                return _urlHelper.Link("GetLocations",
+                    new
+                    {
+                        searchQuery = locationsResourceParameters.SearchQuery,
+                        pageNumber = locationsResourceParameters.PageNumber + 1,
+                        pageSize = locationsResourceParameters.PageSize
+                    });
+
+            default:
+                return _urlHelper.Link("GetLocations",
+                    new
+                    {
+                        searchQuery = locationsResourceParameters.SearchQuery,
+                        pageNumber = locationsResourceParameters.PageNumber,
+                        pageSize = locationsResourceParameters.PageSize
+                    });
         }
     }
+
+
+
+    #endregion
+
 }

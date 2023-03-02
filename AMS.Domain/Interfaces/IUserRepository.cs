@@ -1,6 +1,4 @@
-﻿using AMS.Domain.Entities.Authentication;
-
-namespace AMS.Domain.Interfaces
+﻿namespace AMS.Domain.Interfaces
 {
     public interface IUserRepository
     {
