@@ -1,6 +1,6 @@
 ﻿namespace AMS.Infrastructure.Persistence;
 
-public class ApplicationDbContext : IdentityDbContext<User>
+public class ApplicationDbContext : DbContext
 {
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> dbContextOptions)
@@ -10,7 +10,8 @@ public class ApplicationDbContext : IdentityDbContext<User>
 
     // Entities
   
-    public DbSet<User> Users { get; set; }
+    public DbSet<ApplicationUser> Users { get; set; }
+    public DbSet<ApplicationRole> Roles { get; set; }
     public DbSet<Location> Locations  { get; set; }
 
    public DbSet<Incident> Incidents { get; set; }   

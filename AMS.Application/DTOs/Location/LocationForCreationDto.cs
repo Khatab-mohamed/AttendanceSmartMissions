@@ -1,8 +1,8 @@
-﻿namespace AMS.Application.DataTransferObjects;
+﻿namespace AMS.Application.DTOs.Location;
 
 public class LocationForCreationDto
 {
-    [Required] 
+    [Required]
     public string Name { get; set; }
 
     public DateTimeOffset StartDate { get; }
@@ -15,4 +15,7 @@ public class LocationForCreationDto
     public int AllowedDistance { get; }
     [Required]
     public bool IsPublic { get; }
+
+
 }
+

@@ -8,38 +8,38 @@ namespace AMS.Infrastructure.Repositories
         private readonly ApplicationDbContext _context;
         public UserRepository(ApplicationDbContext context) => _context = context;
 
-        public IEnumerable<User> GetUsers()
+        public IEnumerable<ApplicationUser> GetUsers()
         {
             throw new NotImplementedException();
         }
 
-        public User GetUser(Guid userId)
+        public ApplicationUser GetUser(Guid userId)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<User> Users(IEnumerable<Guid> userIds)
+        public IEnumerable<ApplicationUser> Users(IEnumerable<Guid> userIds)
         {
             throw new NotImplementedException();
         }
 
-        public void AddUser(User user)
+        public void AddUser(ApplicationUser applicationUser)
         {
-            if (user == null)
+            if (applicationUser == null)
             {
-                throw new ArgumentNullException(nameof(user));
+                throw new ArgumentNullException(nameof(applicationUser));
             }
 
 
-            _context.Users.Add(user);
+            _context.Users.Add(applicationUser);
         }
 
-        public void DeleteAuthor(User user)
+        public void DeleteAuthor(ApplicationUser applicationUser)
         {
             throw new NotImplementedException();
         }
 
-        public void UpdateAuthor(User user)
+        public void UpdateAuthor(ApplicationUser applicationUser)
         {
             throw new NotImplementedException();
         }

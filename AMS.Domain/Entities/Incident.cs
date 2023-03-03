@@ -7,6 +7,9 @@ public class Incident  : Base
 
     public string Description { get; set; }
     public Guid UserId { get; set; }
-    public User User { get; set; }
+    public ApplicationUser ApplicationUser { get; set; }
+    public Guid LocationId { get; set; }
+    public Location Location { get; set; }
+
    
 }

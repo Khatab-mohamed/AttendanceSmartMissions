@@ -12,8 +12,8 @@ namespace AMS.Domain.Entities
         [ForeignKey("Location")]
         public Guid LocationId { get; set; }
         public Location Location { get; set; }
-        [ForeignKey("User")]
-        public string UserId { get; set; }
-        public User User { get; set; }
+        [ForeignKey("ApplicationUser")]
+        public Guid UserId { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
     }
 }

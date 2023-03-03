@@ -1,4 +1,4 @@
-﻿using AMS.Domain.Entities;
+﻿using AMS.Application.DTOs.Location;
 
 namespace AMS.Api.Controllers;
 
@@ -16,6 +16,36 @@ public class LocationsController : ControllerBase
     }
 
 
+    [HttpPut]
+    public IActionResult UpdateLocation([FromBody] LocationForCreationDto location)
+    {
+        if (location is null)
+            return BadRequest();
+
+
+
+        var addedLocation = _locationService.AddLocation(location);
+
+        if (!_locationService.Save())
+            throw new Exception("Creating an location failed on save.");
+
+
+
+        return CreatedAtRoute("GetLocation",
+            new { id = addedLocation.Id },
+            addedLocation);
+    }
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> DeleteLocation(Guid id)
+    {
+        var exists = _locationService.LocationExists(id);
+        
+        
+        if (exists is false) return NotFound();
+
+        await _locationService.DeleteLocation(id);
+        return NoContent();
+    }
 
     #region Done
 
@@ -117,5 +147,6 @@ public class LocationsController : ControllerBase
 
 
     #endregion
+
 
 }

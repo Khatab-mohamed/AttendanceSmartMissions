@@ -1,4 +1,5 @@
-﻿using AMS.Domain.Helpers;
+﻿using AMS.Application.DTOs.Location;
+using AMS.Domain.Helpers;
 
 namespace AMS.Application.Profiles;
 

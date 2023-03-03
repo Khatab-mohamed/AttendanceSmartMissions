@@ -1,4 +1,5 @@
-﻿using AMS.Domain.Helpers;
+﻿using AMS.Application.DTOs.Location;
+using AMS.Domain.Helpers;
 using AMS.Domain.Helpers.Locations;
 using AMS.Domain.Interfaces;
 
@@ -32,6 +33,19 @@ public class LocationService : ILocationService
         var location = _locationRepository.GetLocation(locationId);
         var locationToReturn = _mapper.Map<LocationDto>(location);
         return locationToReturn;
+    }
+
+    public bool LocationExists(Guid locationId)
+    {
+        return _locationRepository.IsExist(locationId);
+    }
+
+    public Task DeleteLocation(Guid locationId)
+    {
+        _locationRepository.DeleteLocation(locationId);
+        if (!_locationRepository.Save())
+            throw new Exception($"Deleting location {locationId} failed on save.");
+        return Task.CompletedTask;
     }
 
     public LocationDto AddLocation(LocationForCreationDto location)

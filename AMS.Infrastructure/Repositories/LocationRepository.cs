@@ -47,8 +47,20 @@ public class LocationRepository : ILocationRepository
         return;
     }
 
+    public void DeleteLocation(Guid locationId)
+    {
+        var location = _context.Locations.FirstOrDefault(l=>l.Id == locationId);
+
+        _context.Locations.Remove(location);
+    }
+
     public bool Save()
     {
         return (_context.SaveChanges() >= 0);
+    }
+
+    public bool IsExist(Guid id)
+    {
+       return _context.Locations.Any(a => a.Id == id);
     }
 }

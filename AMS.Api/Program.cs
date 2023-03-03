@@ -11,14 +11,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
-builder.Services.AddScoped<IUrlHelper>(implementationFactory =>
-{
-    var actionContext = implementationFactory.GetService<IActionContextAccessor>()
-        .ActionContext;
-    return new UrlHelper(actionContext);
-});
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

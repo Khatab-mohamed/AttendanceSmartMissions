@@ -1,4 +1,6 @@
 ﻿using AMS.Infrastructure.Persistence;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AMS.Infrastructure;
 
@@ -29,7 +31,8 @@ public static class DependencyInjection
         services.AddScoped<ILocationRepository, LocationRepository>();
         services.AddDbContext<ApplicationDbContext>(opt =>
             opt.UseSqlServer(configuration.GetConnectionString("Default")));
-
+        services.AddIdentityCore<ApplicationUser>().AddRoles<ApplicationRole>()
+            .AddEntityFrameworkStores<ApplicationDbContext>();
         return services;
     }
     public static IServiceCollection AddAuthentication(

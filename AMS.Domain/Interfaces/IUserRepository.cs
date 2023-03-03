@@ -2,13 +2,13 @@
 {
     public interface IUserRepository
     {
-        IEnumerable<User> GetUsers();
-        //PagedList<User> GetUsers(UserResourceParameters authorsResourceParameters);
-        User GetUser(Guid userId);
-        IEnumerable<User> Users(IEnumerable<Guid> userIds);
-        void AddUser(User user);
-        void DeleteAuthor(User user);
-        void UpdateAuthor(User user);
+        IEnumerable<ApplicationUser> GetUsers();
+        //PagedList<ApplicationUser> GetUsers(UserResourceParameters authorsResourceParameters);
+        ApplicationUser GetUser(Guid userId);
+        IEnumerable<ApplicationUser> Users(IEnumerable<Guid> userIds);
+        void AddUser(ApplicationUser applicationUser);
+        void DeleteAuthor(ApplicationUser applicationUser);
+        void UpdateAuthor(ApplicationUser applicationUser);
         bool AuthorExists(Guid userId);
         bool Save();
     }
