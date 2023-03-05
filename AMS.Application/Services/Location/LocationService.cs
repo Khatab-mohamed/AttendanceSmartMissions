@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.Security.Claims;
-
-namespace AMS.Application.Services.Location;
+﻿namespace AMS.Application.Services.Location;
 
 public class LocationService : ILocationService
 {
@@ -34,7 +31,7 @@ public class LocationService : ILocationService
     {
         var locationEntity = _mapper.Map<Domain.Entities.Location>(location);
 
-       locationEntity.CreatedOn = DateTime.UtcNow;
+        locationEntity.CreatedOn = DateTime.UtcNow;
         await _locationRepository.CreateLocation(locationEntity);
         
         var result = _locationRepository.SaveAsync();
@@ -46,6 +43,17 @@ public class LocationService : ILocationService
     {
         return _locationRepository.SaveAsync();
     }
+
+    public Task DeleteLocation(Guid locationId)
+    {
+        _locationRepository.DeleteLocation(locationId);
+
+        if (!_locationRepository.SaveAsync())
+            throw new Exception($"Deleting location {locationId} failed on save.");
+        
+        return Task.CompletedTask;
+    }
+
     /*public LocationDto GetLocation(Guid locationId)
     {
 
@@ -59,13 +67,7 @@ public class LocationService : ILocationService
         return _locationRepository.IsExist(locationId);
     }
 
-    public Task DeleteLocation(Guid locationId)
-    {
-        _locationRepository.DeleteLocation(locationId);
-        if (!_locationRepository.SaveAsync())
-            throw new Exception($"Deleting location {locationId} failed on save.");
-        return Task.CompletedTask;
-    }
+  
 
   */
 }

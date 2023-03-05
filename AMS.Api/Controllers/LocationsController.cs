@@ -31,4 +31,13 @@ public class LocationsController : ControllerBase
 
         return Ok(location);
     }
+
+    [HttpDelete("{id:guid}")]
+    public  IActionResult DeleteLocation([FromHeader]Guid id)
+    { 
+        var result = _locationService.DeleteLocation(id);
+
+        return Ok();
+    }
+
 }
