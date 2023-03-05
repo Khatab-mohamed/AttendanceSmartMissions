@@ -9,5 +9,7 @@ public class LoginDto
     [Required]
     [DataType(DataType.Password)]
     public string Password { get; set; }
+    
+    public  string DeviceSerialNumber { get; set; }
 
 }

@@ -7,9 +7,10 @@ public class LocationRepository : ILocationRepository
     {
         _context = context;
     }
-    public IEnumerable<Location> GetLocations()
+    public async Task<IEnumerable<Location>> GetLocations()
     {
-        return _context.Locations.ToList();
+        var locations = await _context.Locations.ToListAsync();
+        return locations;
     }
 
     public Location? GetLocation(Guid locationId)
@@ -20,7 +21,6 @@ public class LocationRepository : ILocationRepository
     public async Task CreateLocation(Location location)
     {
         await _context.Locations.AddAsync(location);
-        return;
     }
 
     public void DeleteLocation(Guid locationId)
@@ -30,7 +30,7 @@ public class LocationRepository : ILocationRepository
         _context.Locations.Remove(location);
     }
 
-    public bool Save()
+    public bool SaveAsync()
     {
         return (_context.SaveChanges() >= 0);
     }

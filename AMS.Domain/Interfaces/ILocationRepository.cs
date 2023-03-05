@@ -2,11 +2,11 @@
 {
     public interface ILocationRepository
     {
-        IEnumerable<Location> GetLocations();
+        Task<IEnumerable<Location>> GetLocations();
         Location? GetLocation(Guid locationId);
         Task CreateLocation(Location locationId);
         void DeleteLocation(Guid locationId);
-        bool Save();
+        bool SaveAsync();
         bool IsExist(Guid id);
     }
 }

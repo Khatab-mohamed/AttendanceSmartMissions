@@ -1,23 +1,51 @@
-﻿namespace AMS.Application.Services.Location;
+﻿using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+
+namespace AMS.Application.Services.Location;
 
 public class LocationService : ILocationService
 {
+    #region Constructor
+
     private readonly ILocationRepository _locationRepository;
-   // private readonly IMapper _mapper; 
-    public LocationService(ILocationRepository locationRepository
-        /*IMapper mapper*/)
+    private readonly IMapper _mapper;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IUserRepository _userRepository;
+    public LocationService(
+        ILocationRepository locationRepository,
+        IMapper mapper, IHttpContextAccessor httpContextAccessor, IUserRepository userRepository)
     {
         _locationRepository = locationRepository;
-     //   _mapper = mapper;
+        _mapper = mapper;
+        _userRepository = userRepository;
+        _httpContextAccessor = httpContextAccessor;
     }
 
-    public IEnumerable<LocationDto> GetLocations()
+    #endregion
+
+
+    public async Task<IEnumerable<LocationDto>> GetLocations()
     {
-        var locations = new List<LocationDto>();
-        var x= _locationRepository.GetLocations();
-        return locations;
+        var locations = await _locationRepository.GetLocations();
+        var locationsDto = _mapper.Map<IEnumerable< LocationDto >>(locations);
+        return locationsDto;
+    }
+    public async Task<LocationDto> AddAsync(LocationForCreationDto location)
+    {
+        var locationEntity = _mapper.Map<Domain.Entities.Location>(location);
+
+       locationEntity.CreatedOn = DateTime.UtcNow;
+        await _locationRepository.CreateLocation(locationEntity);
+        
+        var result = _locationRepository.SaveAsync();
+            return  _mapper.Map<LocationDto>(locationEntity);
     }
 
+
+    public bool SaveAsync()
+    {
+        return _locationRepository.SaveAsync();
+    }
     /*public LocationDto GetLocation(Guid locationId)
     {
 
@@ -34,28 +62,10 @@ public class LocationService : ILocationService
     public Task DeleteLocation(Guid locationId)
     {
         _locationRepository.DeleteLocation(locationId);
-        if (!_locationRepository.Save())
+        if (!_locationRepository.SaveAsync())
             throw new Exception($"Deleting location {locationId} failed on save.");
         return Task.CompletedTask;
     }
 
-    public LocationDto AddLocation(LocationForCreationDto location)
-    { 
-        var locationEntity = _mapper.Map<Domain.Entities.Location>(location);
-        _locationRepository.CreateLocation(locationEntity);
-        
-        if (!_locationRepository.Save())
-            throw new Exception("Creating an Location failed on save.");
-        
-        var addLocation = _mapper.Map<LocationDto>(locationEntity);
-
-        return addLocation;
-
-    }
-
-
-    public bool Save()
-    {
-        return _locationRepository.Save();
-    }*/
+  */
 }

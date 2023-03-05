@@ -4,7 +4,7 @@ namespace AMS.Api.Controllers;
 
 [Route("api/admin/role")]
 [ApiController]
-[Authorize(Roles = "SuperAdmin")]
+[Authorize(Roles = "SuperAdmin,Admin")]
 public class AdministrationController : ControllerBase
 {
     private readonly IRoleService _roleService;

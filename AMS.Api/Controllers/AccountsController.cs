@@ -25,7 +25,8 @@ namespace AMS.Api.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] RegisterDto applicationUser)
         {
-            if (applicationUser is not null) await _userService.Register(applicationUser);
+            if (applicationUser is not null)
+                await _userService.Register(applicationUser);
 
             return Ok();
         }

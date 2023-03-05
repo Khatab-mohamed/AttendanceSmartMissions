@@ -1,26 +1,29 @@
-﻿namespace AMS.Application.Services.Authentication;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace AMS.Application.Services.Authentication;
 
 public class UserService:IUserService
 {
+    #region Constructor
+
+
     private readonly UserManager<User> _userManager;
-    //private readonly SignInManager<User> _signInManager;
     private readonly IMapper _mapper;
     private readonly IUserRepository _userRepository;
     private readonly IJwtTokenGenerator _jwtTokenGenerator;
-    //private readonly SignInManager<User> _signInManager;
 
-    public UserService(UserManager<User> userManager, 
+    public UserService(UserManager<User> userManager,
         IMapper mapper,
         IUserRepository userRepository,
-        IJwtTokenGenerator jwtTokenGenerator
-        /*,SignInManager<User> signInManager*/)
+        IJwtTokenGenerator jwtTokenGenerator)
     {
         _userManager = userManager;
         _mapper = mapper;
         _userRepository = userRepository;
         _jwtTokenGenerator = jwtTokenGenerator;
-      //  _signInManager = signInManager;
     }
+    #endregion
+
     public async Task Register(RegisterDto? userDto)
     {
        var user = _mapper.Map<User>(userDto); 
@@ -40,11 +43,11 @@ public class UserService:IUserService
    public async Task<string> Login(LoginDto user)
    {
        var userIdentity = await UserExist(user.Email);
-
        var activity = userIdentity.IsActive;
        var pass = _userManager.CheckPasswordAsync(userIdentity, user.Password);
+
        
-       if (userIdentity.IsActive 
+       if (!userIdentity.IsActive 
            &&
            await _userManager.CheckPasswordAsync(userIdentity, user.Password))
        {

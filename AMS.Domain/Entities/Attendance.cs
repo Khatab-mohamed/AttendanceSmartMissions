@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AMS.Domain.Entities
+﻿namespace AMS.Domain.Entities
 {
-    public class Attendance :Base
+    public  class Attendance :Base
     {
         [ForeignKey("Location")]
         public Guid LocationId { get; set; }
@@ -15,5 +8,8 @@ namespace AMS.Domain.Entities
         [ForeignKey("User")]
         public Guid UserId { get; set; }
         public User User { get; set; }
+        public AttendanceType AttendanceType { get; set; }
     }
+
+    
 }

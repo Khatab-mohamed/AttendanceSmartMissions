@@ -2,6 +2,7 @@
 {
     public interface IUserRepository
     {
+        Task<User> GetUserByName(string name);
         bool SaveAsync();
     }
    
