@@ -1,4 +1,6 @@
-﻿namespace AMS.Infrastructure;
+﻿using AMS.Application.Common;
+
+namespace AMS.Infrastructure;
 
 public static class DependencyInjection
 {
@@ -36,6 +38,8 @@ public static class DependencyInjection
                 options.Password.RequiredLength = 6;
             })
             .AddEntityFrameworkStores<ApplicationDbContext>();
+        services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
+
         return services;
     }
     public static IServiceCollection AddAuthentication(
@@ -48,7 +52,7 @@ public static class DependencyInjection
 
         services.AddSingleton(Options.Create(jwtSettings));
 
-       // services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
+        services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
 
         services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters

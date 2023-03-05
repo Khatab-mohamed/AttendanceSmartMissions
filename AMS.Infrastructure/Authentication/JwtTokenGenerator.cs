@@ -1,4 +1,6 @@
-﻿namespace AMS.Infrastructure.Authentication;
+﻿using AMS.Domain.Entities.Authentication;
+
+namespace AMS.Infrastructure.Authentication;
 
 public class JwtTokenGenerator : IJwtTokenGenerator
 {
@@ -26,6 +28,14 @@ public class JwtTokenGenerator : IJwtTokenGenerator
             new Claim(JwtRegisteredClaimNames.FamilyName,user.FullName),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         };
+        /*if (roles is not null)
+        {
+            foreach (var role in roles)
+            {
+                    claims.Add(new Claim(ClaimTypes.Role, role));
+            }
+        }*/
+        
 
         var securityToken = new JwtSecurityToken(
             issuer: _jWtSettings.Issuer,
