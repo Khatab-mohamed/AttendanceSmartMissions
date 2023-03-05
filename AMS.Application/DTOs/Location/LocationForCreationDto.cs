@@ -2,19 +2,14 @@
 
 public class LocationForCreationDto
 {
-    [Required]
     public string Name { get; set; }
 
-    public DateTimeOffset StartDate { get; }
-    public DateTimeOffset EndDate { get; }
-    [Required]
-    public double Latitude { get; }
-    [Required]
-    public double Longitude { get; }
-    [Required]
-    public int AllowedDistance { get; }
-    [Required]
-    public bool IsPublic { get; }
+    public DateTimeOffset StartDate { get; set; }
+    public DateTimeOffset EndDate { get; set; }
+    public double Latitude { get; set; }
+    public double Longitude { get; set; }
+    public int AllowedDistance { get; set; }
+    public bool IsPublic { get; set; }
 
 
 }

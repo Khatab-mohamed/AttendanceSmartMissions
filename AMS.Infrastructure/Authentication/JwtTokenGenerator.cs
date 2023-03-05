@@ -11,7 +11,7 @@ public class JwtTokenGenerator : IJwtTokenGenerator
         _jWtSettings = jWtOptions.Value;
     }
 
-    public string GenerateToken(ApplicationUser applicationUser)
+    public string GenerateToken(User user)
     {
         var signingCredentials = new SigningCredentials(
             new SymmetricSecurityKey(
@@ -21,9 +21,9 @@ public class JwtTokenGenerator : IJwtTokenGenerator
 
         var claims = new[]
         {
-            new Claim(JwtRegisteredClaimNames.Sub,applicationUser.Id.ToString()),
-            new Claim(JwtRegisteredClaimNames.GivenName,applicationUser.FullName),
-            new Claim(JwtRegisteredClaimNames.FamilyName,applicationUser.FullName),
+            new Claim(JwtRegisteredClaimNames.Sub,user.Id.ToString()),
+            new Claim(JwtRegisteredClaimNames.GivenName,user.FullName),
+            new Claim(JwtRegisteredClaimNames.FamilyName,user.FullName),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         };
 

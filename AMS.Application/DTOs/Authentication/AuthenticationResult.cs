@@ -1,6 +1,6 @@
 ﻿namespace AMS.Application.DTOs.Authentication;
 
 public record AuthenticateResult(
-    ApplicationUser ApplicationUser,
+    User User,
     string Token
 );

@@ -1,33 +1,24 @@
-﻿using AMS.Application.DTOs.Location;
-using AMS.Domain.Helpers;
-using AMS.Domain.Helpers.Locations;
-using AMS.Domain.Interfaces;
-
-namespace AMS.Application.Services.Location;
+﻿namespace AMS.Application.Services.Location;
 
 public class LocationService : ILocationService
 {
     private readonly ILocationRepository _locationRepository;
-    private readonly IMapper _mapper; 
-    public LocationService(ILocationRepository locationRepository,
-        IMapper mapper)
+   // private readonly IMapper _mapper; 
+    public LocationService(ILocationRepository locationRepository
+        /*IMapper mapper*/)
     {
         _locationRepository = locationRepository;
-        _mapper = mapper;
+     //   _mapper = mapper;
     }
 
-    public PagedList<Domain.Entities.Location> GetLocations(LocationsResourceParameters locationsResourceParameters)
-    { 
-        var locations =  _locationRepository.GetLocations(locationsResourceParameters);
-        // Try Map 
-        // Todo
-//         var mappedLocations =_mapper.Map<PagedList<LocationDto> >(locations);
-
+    public IEnumerable<LocationDto> GetLocations()
+    {
+        var locations = new List<LocationDto>();
+        var x= _locationRepository.GetLocations();
         return locations;
-
     }
 
-    public LocationDto GetLocation(Guid locationId)
+    /*public LocationDto GetLocation(Guid locationId)
     {
 
         var location = _locationRepository.GetLocation(locationId);
@@ -66,5 +57,5 @@ public class LocationService : ILocationService
     public bool Save()
     {
         return _locationRepository.Save();
-    }
+    }*/
 }

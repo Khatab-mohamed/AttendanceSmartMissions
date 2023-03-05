@@ -1,8 +1,4 @@
-﻿using AMS.Domain.Helpers;
-using AMS.Domain.Helpers.Locations;
-using AMS.Infrastructure.Persistence;
-
-namespace AMS.Infrastructure.Repositories;
+﻿namespace AMS.Infrastructure.Repositories;
 
 public class LocationRepository : ILocationRepository
 {
@@ -11,29 +7,9 @@ public class LocationRepository : ILocationRepository
     {
         _context = context;
     }
-    public PagedList<Location> GetLocations(LocationsResourceParameters locationsResourceParameters)
+    public IEnumerable<Location> GetLocations()
     {
-        var collectionBeforePaging =
-            _context.Locations
-                .OrderBy(l => l.Name)
-                .AsQueryable();
-        // paging
-        if (string.IsNullOrEmpty(locationsResourceParameters.SearchQuery))
-            return PagedList<Location>.Create(collectionBeforePaging,
-                locationsResourceParameters.PageNumber,
-                locationsResourceParameters.PageSize);
-        
-        // trim & ignore casing
-        var searchQueryForWhereClause = locationsResourceParameters.SearchQuery
-            .Trim().ToLowerInvariant();
-
-        collectionBeforePaging = collectionBeforePaging
-            .Where(a => a.Name.ToLowerInvariant().Contains(searchQueryForWhereClause));
-
-        return PagedList<Location>.Create(collectionBeforePaging,
-            locationsResourceParameters.PageNumber,
-            locationsResourceParameters.PageSize);
-
+        return _context.Locations.ToList();
     }
 
     public Location? GetLocation(Guid locationId)

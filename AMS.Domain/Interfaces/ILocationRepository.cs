@@ -2,7 +2,7 @@
 {
     public interface ILocationRepository
     {
-        PagedList<Location> GetLocations(LocationsResourceParameters locationsResourceParameters);
+        IEnumerable<Location> GetLocations();
         Location? GetLocation(Guid locationId);
         Task CreateLocation(Location locationId);
         void DeleteLocation(Guid locationId);

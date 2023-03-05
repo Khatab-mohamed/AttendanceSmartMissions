@@ -1,8 +1,4 @@
-﻿using AMS.Infrastructure.Persistence;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace AMS.Infrastructure;
+﻿namespace AMS.Infrastructure;
 
 public static class DependencyInjection
 {
@@ -16,7 +12,6 @@ public static class DependencyInjection
         services.AddAuthentication(configuration)
             .AddPersistence(configuration);
 
-        services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         return services;
 
 
@@ -29,9 +24,17 @@ public static class DependencyInjection
 
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<ILocationRepository, LocationRepository>();
-        services.AddDbContext<ApplicationDbContext>(opt =>
+        services.AddDbContextPool<ApplicationDbContext>(opt =>
             opt.UseSqlServer(configuration.GetConnectionString("Default")));
-        services.AddIdentityCore<ApplicationUser>().AddRoles<ApplicationRole>()
+        services.AddIdentityCore<User>(options =>
+            {
+                // Default Password settings.
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 6;
+            })
             .AddEntityFrameworkStores<ApplicationDbContext>();
         return services;
     }
@@ -45,7 +48,7 @@ public static class DependencyInjection
 
         services.AddSingleton(Options.Create(jwtSettings));
 
-        services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
+       // services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
 
         services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters

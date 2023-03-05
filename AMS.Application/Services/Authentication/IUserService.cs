@@ -4,6 +4,6 @@ public interface IUserService
 {
 
     //UserDTO GetById(Guid id);
-    Task<AuthenticateResult> Register(RegisterDto applicationUser);
+    Task Register(RegisterDto? userDto);
 
 }
