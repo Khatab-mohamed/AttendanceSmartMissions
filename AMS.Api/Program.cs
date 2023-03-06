@@ -13,6 +13,16 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        "CorsPolicy",
+        corsPolicyBuilder => corsPolicyBuilder.WithOrigins("http://localhost:4200")
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials());
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -28,6 +38,7 @@ app.Map("/error", (HttpContext httpContext) =>
     var exception = httpContext.Features.Get<IExceptionHandlerFeature>()?.Error;
     return Results.Problem();
 });
+
 
 app.UseAuthentication();
 app.UseAuthorization();
