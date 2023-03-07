@@ -17,5 +17,9 @@ namespace AMS.Infrastructure.Repositories
             return (_context.SaveChanges() >= 0);
         }
 
+        public async Task<IEnumerable<User>> GetAll()
+        {
+          return  await _context.Users.ToListAsync();
+        }
     }
 }

@@ -8,7 +8,10 @@ public class UsersProfile : Profile
             m => m.MapFrom(s => s.Email));
         CreateMap<CreateRoleDto, IdentityRole>();
         CreateMap<UpdateRoleDto, IdentityRole>();
-        CreateMap<IdentityRole, RoleModel>().ForMember(d => d.RoleName, m => m.MapFrom(s => s.Name));
+        CreateMap<IdentityRole, RoleModel>()
+            .ForMember(d => d.RoleName, m => m.MapFrom(s => s.Name));
+
+        CreateMap<User, UserDto>().IgnoreAllPropertiesWithAnInaccessibleSetter();
     }
     
 }

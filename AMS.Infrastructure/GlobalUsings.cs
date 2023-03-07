@@ -12,6 +12,7 @@ global using AMS.Infrastructure.Authentication;
 global using AMS.Infrastructure.Persistence;
 global using AMS.Infrastructure.Repositories;
 global using Microsoft.AspNetCore.Authentication.JwtBearer;
+global using Microsoft.AspNetCore.Identity;
 global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Infrastructure;

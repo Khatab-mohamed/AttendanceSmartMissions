@@ -1,4 +1,6 @@
 ﻿using AMS.Application.Common;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace AMS.Infrastructure;
 
@@ -24,11 +26,22 @@ public static class DependencyInjection
         ConfigurationManager configuration)
     {
 
+        #region Repositorties
+
         services.AddScoped<IUserRepository, UserRepository>();
+
         services.AddScoped<ILocationRepository, LocationRepository>();
+
+        #endregion
+
+
         services.AddDbContextPool<ApplicationDbContext>(opt =>
             opt.UseSqlServer(configuration.GetConnectionString("Default")));
-        services.AddIdentityCore<User>(options =>
+
+        #region Identity
+
+
+        services.AddIdentity<User, Role>(options =>
             {
                 // Default Password settings.
                 options.Password.RequireDigit = false;
@@ -37,7 +50,13 @@ public static class DependencyInjection
                 options.Password.RequireUppercase = false;
                 options.Password.RequiredLength = 6;
             })
-            .AddEntityFrameworkStores<ApplicationDbContext>();
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
+
+
+        #endregion
+
+
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
         return services;
@@ -52,19 +71,31 @@ public static class DependencyInjection
 
         services.AddSingleton(Options.Create(jwtSettings));
 
-        services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
+        services.AddTransient<IJwtTokenGenerator, JwtTokenGenerator>();
 
-        services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters
+
+
+        services.AddAuthentication(options =>
             {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
-                ValidIssuer = jwtSettings.Issuer,
-                ValidAudience = jwtSettings.Audience,
-                IssuerSigningKey = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(jwtSettings.SecretKey))
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.SaveToken = true;
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = jwtSettings.Issuer,
+                    ValidAudience = jwtSettings.Audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(jwtSettings.SecretKey))
+                };
             });
         return services;
     }

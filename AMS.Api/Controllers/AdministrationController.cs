@@ -2,16 +2,21 @@
 
 namespace AMS.Api.Controllers;
 
-[Route("api/admin/role")]
+[Route("api/[controller]")]
 [ApiController]
-[Authorize(Roles = "SuperAdmin,Admin")]
+[Authorize(Roles = "Super Admin")]
 public class AdministrationController : ControllerBase
 {
+    #region Constructor
+
     private readonly IRoleService _roleService;
     public AdministrationController(IRoleService roleService)
     {
         _roleService = roleService;
     }
+
+
+    #endregion
 
     [HttpGet]
     public ActionResult<List<RoleDto>> GetRoles()

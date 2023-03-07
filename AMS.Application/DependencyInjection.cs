@@ -1,14 +1,11 @@
-﻿using AMS.Application.Services.Authentication;
-using Microsoft.AspNetCore.Http;
-using System.Security.Principal;
-
-namespace AMS.Application;
+﻿namespace AMS.Application;
 
 public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services.AddTransient<ILocationService,LocationService>();
+        services.AddTransient<IRoleService, RoleService>();
         services.AddTransient<IUserService,UserService>();
         // Inject IPrincipal
         services.AddHttpContextAccessor();

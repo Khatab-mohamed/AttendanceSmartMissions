@@ -5,7 +5,7 @@ namespace AMS.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
+[Authorize(Roles = "SuperAdmin")]
 public class LocationsController : ControllerBase
 {
     private  readonly  ILocationService _locationService;
@@ -33,7 +33,7 @@ public class LocationsController : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
-    public  IActionResult DeleteLocation([FromHeader]Guid id)
+    public  IActionResult DeleteLocation(Guid id)
     { 
         var result = _locationService.DeleteLocation(id);
 

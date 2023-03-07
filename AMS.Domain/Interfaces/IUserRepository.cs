@@ -4,6 +4,7 @@
     {
         Task<User> GetUserByName(string name);
         bool SaveAsync();
+        Task<IEnumerable<User>> GetAll();
     }
    
 }
