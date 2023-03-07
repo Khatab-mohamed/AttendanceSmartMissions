@@ -1,4 +1,6 @@
-﻿namespace AMS.Application.Services.Authentication;
+﻿using AMS.Domain.Entities.Authentication;
+
+namespace AMS.Application.Services.Authentication;
 
 public class UserService : IUserService
 {
@@ -32,7 +34,7 @@ public class UserService : IUserService
 
     }
 
-    private async Task<User?> UserExist(string email)
+    public async Task<User?> UserExist(string email)
     {
         var user = await _userManager.FindByEmailAsync(email);
         return user;
@@ -98,5 +100,13 @@ public class UserService : IUserService
             }
         }
         return userToReturn;
+    }
+
+    public async Task UpdateUser(UserDto userDto)
+    {
+        var user = _userManager.FindByEmailAsync(userDto.Email);
+        
+        var updatedUser = _mapper.Map<User>(user);
+        await _userManager.UpdateAsync(updatedUser);
     }
 }
