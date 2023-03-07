@@ -39,7 +39,7 @@ public class JwtTokenGenerator : IJwtTokenGenerator
             new Claim(JwtRegisteredClaimNames.Sub, user.FullName),
             new Claim("userId",user.Id.ToString()),
         };
-        claims.AddRange(roles.Select(role => new Claim("roles",role)));
+        claims.AddRange(roles.Select(role => new Claim("roles", role)));
         // Get Roles
         var userClaims = await _userManager.GetClaimsAsync(user);
 
@@ -52,9 +52,6 @@ public class JwtTokenGenerator : IJwtTokenGenerator
             claims: claims,
             signingCredentials: signingCredentials);
         return new JwtSecurityTokenHandler().WriteToken(securityToken);
-
-        
-       
 
     }
 }

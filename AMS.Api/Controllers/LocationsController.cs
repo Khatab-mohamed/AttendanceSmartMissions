@@ -1,11 +1,13 @@
 ﻿using AMS.Application.DTOs.Location;
 using AMS.Application.Services.Location;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace AMS.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize(Roles = "SuperAdmin")]
+[Authorize (AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+[Authorize(Roles = "Super Admin")]
 public class LocationsController : ControllerBase
 {
     private  readonly  ILocationService _locationService;
@@ -25,7 +27,8 @@ public class LocationsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateLocation(LocationForCreationDto locationDto)
     {
-        if (locationDto is null) return BadRequest("Invalid Location");
+        if (locationDto is null) 
+            return BadRequest("Invalid Location");
 
         var location = await _locationService.AddAsync(locationDto).ConfigureAwait(false);
 

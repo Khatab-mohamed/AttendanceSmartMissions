@@ -2,13 +2,15 @@
 using AMS.Application.Common.Authentication;
 using AMS.Domain.Entities.Authentication;
 using Azure;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 
 namespace AMS.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(Roles = "Super Admin,Admin")]
     public class AccountsController : ControllerBase
     {
         #region Constructor
@@ -50,9 +52,13 @@ namespace AMS.Api.Controllers
 
 
             var token = await _userService.Login(loginDto);
+            var tokenResponse = new LoginResponse()
+            {
+                Token = token
+            };
             if (token is null)
                 return BadRequest("Invalid Credentials");
-            return Ok(token);
+            return Ok(tokenResponse);
         }
         
         [HttpGet]
