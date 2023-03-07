@@ -1,5 +1,6 @@
 ﻿using AMS.Application.DTOs.Location;
 using AMS.Application.Services.Location;
+using AMS.Domain.Entities.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace AMS.Api.Controllers;
@@ -11,9 +12,11 @@ namespace AMS.Api.Controllers;
 public class LocationsController : ControllerBase
 {
     private  readonly  ILocationService _locationService;
-    public LocationsController(ILocationService locationService)
+    private readonly UserManager<User> _userManager; 
+    public LocationsController(ILocationService locationService, UserManager<User> userManager)
     {
         _locationService = locationService;
+        _userManager = userManager;
     }
 
     [HttpGet]
@@ -29,6 +32,7 @@ public class LocationsController : ControllerBase
     {
         if (locationDto is null) 
             return BadRequest("Invalid Location");
+        var userId = _userManager.GetUserId(HttpContext.User));
 
         var location = await _locationService.AddAsync(locationDto).ConfigureAwait(false);
 
