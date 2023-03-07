@@ -32,7 +32,7 @@ public class LocationsController : ControllerBase
     {
         if (locationDto is null) 
             return BadRequest("Invalid Location");
-        var userId = _userManager.GetUserId(HttpContext.User));
+       
 
         var location = await _locationService.AddAsync(locationDto).ConfigureAwait(false);
 
