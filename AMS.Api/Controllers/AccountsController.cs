@@ -1,11 +1,4 @@
-﻿using AMS.Application.Common;
-using AMS.Application.Common.Authentication;
-using AMS.Domain.Entities.Authentication;
-using Azure;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-
-namespace AMS.Api.Controllers
+﻿namespace AMS.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -52,12 +45,13 @@ namespace AMS.Api.Controllers
 
 
             var token = await _userService.Login(loginDto);
+            if (token == null) BadRequest("Invalid Credentials Check Your Email Or password");
+
             var tokenResponse = new LoginResponse()
             {
                 Token = token
             };
-            if (token is null)
-                return BadRequest("Invalid Credentials");
+
             return Ok(tokenResponse);
         }
         

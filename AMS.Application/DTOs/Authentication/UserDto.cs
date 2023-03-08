@@ -9,5 +9,5 @@ public class UserDto
 
     public string IDNumber { get; set; }
     public string PhoneNumber { get; set; }
-    public List<string> Roles { get; set; }
+    public List<string>? Roles { get; set; }
 }

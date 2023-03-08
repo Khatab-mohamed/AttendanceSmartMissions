@@ -1,4 +1,6 @@
-﻿namespace AMS.Application.Profiles;
+﻿using AMS.Domain.Entities;
+
+namespace AMS.Application.Profiles;
 
 public class LocationsProfile : Profile
 {

@@ -1,8 +1,4 @@
-﻿using AMS.Application.Common;
-using AMS.Application.DTOs.Authentication.Roles;
-using AMS.Application.Services.Authentication.Roles;
-using AMS.Domain.Entities.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using AMS.Application.DTOs.Authentication.Roles;
 
 namespace AMS.Api.Controllers;
 

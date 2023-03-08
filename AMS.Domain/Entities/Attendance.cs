@@ -1,4 +1,6 @@
-﻿namespace AMS.Domain.Entities
+﻿using AMS.Domain.Entities.Helpers;
+
+namespace AMS.Domain.Entities
 {
     public  class Attendance :Base
     {

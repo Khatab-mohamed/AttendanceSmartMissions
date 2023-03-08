@@ -1,4 +1,4 @@
-﻿namespace AMS.Domain.Entities;
+﻿namespace AMS.Domain.Entities.Helpers;
 public enum AttendanceType
 {
     CheckIn,

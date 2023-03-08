@@ -1,8 +1,4 @@
-﻿using AMS.Application.Common;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-
-namespace AMS.Infrastructure;
+﻿namespace AMS.Infrastructure;
 
 public static class DependencyInjection
 {
@@ -31,6 +27,7 @@ public static class DependencyInjection
         services.AddScoped<IUserRepository, UserRepository>();
 
         services.AddScoped<ILocationRepository, LocationRepository>();
+        services.AddScoped<IAttendanceRepository, AttendanceRepository>();
 
         #endregion
 
