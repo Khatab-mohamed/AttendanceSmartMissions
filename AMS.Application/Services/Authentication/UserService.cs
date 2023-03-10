@@ -71,6 +71,16 @@ public class UserService : IUserService
             return token ;
         }
 
+    public async Task UpdateUser(UpdateUserDto userDto)
+    {
+        var user = await _userManager.FindByIdAsync(userDto.Id.ToString());
+        if (user == null) return;
+        user.Email = userDto.Email;
+        user.IsActive = userDto.IsActive;
+        user.FullName = userDto.FullName;
+        await _userManager.UpdateAsync(user);
+    }
+
     public async  Task<UserDto> GetUserById(string id)
     {
         var user = await _userManager.FindByIdAsync(id);

@@ -81,6 +81,7 @@ namespace AMS.Api.Controllers
            
             return Ok(user);
         }
+   
         [HttpDelete("{id:guid}")]
 
         public async Task<IActionResult> DeleteUser(Guid id)
@@ -93,19 +94,14 @@ namespace AMS.Api.Controllers
             return Ok(new ResponseDto { Status = "Success", Message = "User deleted Successfully" });
         }
 
-        /*
+      
         [HttpPut]
         public async Task<IActionResult> UpdateUser(UpdateUserDto userDto)
         {
-         
-            var userExist = await _userManager.Users.fin
-
-            if (userExist is null)
-                return BadRequest(new ResponseDto { Status = "Failed", Message = "User Not Exists" }); 
-            var res =  _userService.UpdateUser(userDto);
-
-            return Ok(res);
-        } */
+            if (ModelState.IsValid)
+             await _userService.UpdateUser(userDto);
+            return Ok();
+        }
         /*[HttpPut]
         public async Task<IActionResult> ActiveUser(UpdateUserDto userDto)
         {
