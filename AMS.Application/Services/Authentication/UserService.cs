@@ -1,4 +1,5 @@
-﻿using AMS.Domain.Entities.Authentication;
+﻿using AMS.Application.Common;
+using AMS.Domain.Entities.Authentication;
 
 namespace AMS.Application.Services.Authentication;
 
@@ -70,6 +71,16 @@ public class UserService : IUserService
             return token ;
         }
 
+    public async  Task<UserDto> GetUserById(string id)
+    {
+        var user = await _userManager.FindByIdAsync(id);
+        if (user is null)
+            return null;
+
+        var userToReturn = _mapper.Map<UserDto>(user);
+        return userToReturn;
+    }
+
     public Task Logout()
     {
         throw new NotImplementedException();
@@ -108,5 +119,15 @@ public class UserService : IUserService
         
         var updatedUser = _mapper.Map<User>(user);
         await _userManager.UpdateAsync(updatedUser);
+    }
+
+    public Task ForgetPassword(Guid userId, int code, string newPassword)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task ChangePassword(Guid userId, int code, string oldPassword, string newPassword)
+    {
+        throw new NotImplementedException();
     }
 }

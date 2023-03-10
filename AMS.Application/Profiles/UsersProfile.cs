@@ -11,7 +11,7 @@ public class UsersProfile : Profile
         CreateMap<IdentityRole, RoleModel>()
             .ForMember(d => d.RoleName, m => m.MapFrom(s => s.Name));
 
-        CreateMap<User, UserDto>().IgnoreAllPropertiesWithAnInaccessibleSetter();
+        CreateMap<User, UserDto>().IgnoreAllPropertiesWithAnInaccessibleSetter().ReverseMap();
     }
     
 }
