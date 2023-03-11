@@ -2,20 +2,23 @@
 
 public class LocationRepository : ILocationRepository
 {
+    #region Constructor
     private readonly ApplicationDbContext _context;
-    public LocationRepository(ApplicationDbContext context)
-    {
-        _context = context;
-    }
+    public LocationRepository(ApplicationDbContext context) => _context = context;
+
+    #endregion
+
     public async Task<IEnumerable<Location>> GetLocations()
     {
         var locations = await _context.Locations.ToListAsync();
         return locations;
     }
 
-    public Location? GetLocation(Guid locationId)
+    public async Task<Location?> GetAsync(Guid locationId)
     {
-        return _context.Locations.FirstOrDefault(a => a.Id == locationId);
+        var entity =  await _context.Locations.FindAsync( locationId);
+        return entity;
+
     }
 
     public async Task CreateLocation(Location location)

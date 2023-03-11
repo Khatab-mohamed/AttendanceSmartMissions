@@ -32,7 +32,7 @@ namespace AMS.Api.Controllers
                 return CreatedAtRoute("GetRoute", new{});
             }
 
-            return BadRequest("Bad Request");
+            return BadRequest(new ResponseDto{Status = "Failed",Message = "can not Create Location"});
         }
       
         private Guid GetCurrentUserId()

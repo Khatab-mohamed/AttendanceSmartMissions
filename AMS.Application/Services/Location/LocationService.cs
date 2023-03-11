@@ -27,6 +27,14 @@ public class LocationService : ILocationService
         var locationsDto = _mapper.Map<IEnumerable< LocationDto >>(locations);
         return locationsDto;
     }
+
+    public async Task<LocationDto> GetLocationAsync(Guid id)
+    {
+        var location = await _locationRepository.GetAsync(id);
+        var locationDto =  _mapper.Map<LocationDto>(location);
+        return locationDto;
+    }
+
     public async Task<LocationDto> AddAsync(LocationForCreationDto location)
     {
         var locationEntity = _mapper.Map<Domain.Entities.Location>(location);
@@ -53,6 +61,12 @@ public class LocationService : ILocationService
         
         return Task.CompletedTask;
     }
+    public bool IsExists(Guid locationId)
+    {
+        return _locationRepository.IsExist(locationId);
+    }
+
+
 
     /*public LocationDto GetLocation(Guid locationId)
     {
@@ -62,12 +76,7 @@ public class LocationService : ILocationService
         return locationToReturn;
     }
 
-    public bool LocationExists(Guid locationId)
-    {
-        return _locationRepository.IsExist(locationId);
-    }
-
-  
+   
 
   */
 }

@@ -3,7 +3,7 @@
     public interface ILocationRepository
     {
         Task<IEnumerable<Location>> GetLocations();
-        Location? GetLocation(Guid locationId);
+        Task<Location?> GetAsync(Guid locationId);
         Task CreateLocation(Location locationId);
         void DeleteLocation(Guid locationId);
         bool SaveAsync();
