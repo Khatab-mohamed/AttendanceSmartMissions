@@ -9,7 +9,7 @@ public class LocationsProfile : Profile
         CreateMap<LocationDto,Location>()
             .ForMember(d => d.Id, m => m.MapFrom(s => s.Id))
             .ForMember(d =>d.Name, m => m.MapFrom(s => s.Name)).ReverseMap();
-        CreateMap<LocationForCreationDto, Location>().ReverseMap();
+        CreateMap<CreationLocationDto, Location>().ReverseMap();
 
     }
     

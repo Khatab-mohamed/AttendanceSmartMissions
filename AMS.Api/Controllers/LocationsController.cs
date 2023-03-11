@@ -41,13 +41,26 @@ public class LocationsController : ControllerBase
 
 
     [HttpPost]
-    public async Task<IActionResult> CreateLocation(LocationForCreationDto locationDto)
+    public async Task<IActionResult> CreateLocation(CreationLocationDto creationLocationDto)
     {
-        if (locationDto is null) 
+        if (creationLocationDto is null) 
             return BadRequest("Invalid Location");
        
 
-        var location = await _locationService.AddAsync(locationDto).ConfigureAwait(false);
+        var location = await _locationService.AddAsync(creationLocationDto).ConfigureAwait(false);
+
+        return Ok(location);
+    }
+    
+    
+    [HttpPut]
+    public async Task<IActionResult> UpdateLocation(CreationLocationDto creationLocationDto)
+    {
+        if (creationLocationDto is null) 
+            return BadRequest("Invalid Location");
+       
+
+        var location = await _locationService.AddAsync(creationLocationDto).ConfigureAwait(false);
 
         return Ok(location);
     }

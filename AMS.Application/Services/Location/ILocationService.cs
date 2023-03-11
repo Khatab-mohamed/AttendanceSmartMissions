@@ -7,7 +7,7 @@ public interface ILocationService
     Task<LocationDto> GetLocationAsync(Guid id);
     bool IsExists(Guid locationId);
     Task DeleteLocation(Guid locationId);
-    Task<LocationDto> AddAsync(LocationForCreationDto location);
+    Task<LocationDto> AddAsync(CreationLocationDto creationLocation);
     
     bool SaveAsync();
 }

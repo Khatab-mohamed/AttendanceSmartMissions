@@ -35,9 +35,9 @@ public class LocationService : ILocationService
         return locationDto;
     }
 
-    public async Task<LocationDto> AddAsync(LocationForCreationDto location)
+    public async Task<LocationDto> AddAsync(CreationLocationDto creationLocation)
     {
-        var locationEntity = _mapper.Map<Domain.Entities.Location>(location);
+        var locationEntity = _mapper.Map<Domain.Entities.Location>(creationLocation);
 
         locationEntity.CreatedOn = DateTime.UtcNow;
         await _locationRepository.CreateLocation(locationEntity);
@@ -57,7 +57,7 @@ public class LocationService : ILocationService
         _locationRepository.DeleteLocation(locationId);
 
         if (!_locationRepository.SaveAsync())
-            throw new Exception($"Deleting location {locationId} failed on save.");
+            throw new Exception($"Deleting creationLocation {locationId} failed on save.");
         
         return Task.CompletedTask;
     }
@@ -71,8 +71,8 @@ public class LocationService : ILocationService
     /*public LocationDto GetLocation(Guid locationId)
     {
 
-        var location = _locationRepository.GetLocation(locationId);
-        var locationToReturn = _mapper.Map<LocationDto>(location);
+        var creationLocation = _locationRepository.GetLocation(locationId);
+        var locationToReturn = _mapper.Map<LocationDto>(creationLocation);
         return locationToReturn;
     }
 

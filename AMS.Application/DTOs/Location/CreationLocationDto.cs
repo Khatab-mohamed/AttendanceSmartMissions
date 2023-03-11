@@ -1,6 +1,6 @@
 ﻿namespace AMS.Application.DTOs.Location;
 
-public class LocationForCreationDto
+public class CreationLocationDto
 {
     [Required]
     public string Name { get; set; }
