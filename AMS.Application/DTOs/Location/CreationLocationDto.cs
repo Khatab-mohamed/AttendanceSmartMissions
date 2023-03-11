@@ -15,8 +15,8 @@ public class CreationLocationDto
     public double Longitude { get; set; }
     [Required]
     public int AllowedDistance { get; set; }
+    [Required]
     public bool IsPublic { get; set; }
 
 
 }
-

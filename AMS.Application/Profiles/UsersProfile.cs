@@ -6,7 +6,7 @@ public class UsersProfile : Profile
     {
         CreateMap<RegisterDto, User>().ForMember(d => d.UserName,
             m => m.MapFrom(s => s.Email));
-        CreateMap<CreateRoleDto, IdentityRole>();
+        CreateMap<RoleDto, IdentityRole>();
         CreateMap<UpdateRoleDto, IdentityRole>();
         CreateMap<IdentityRole, RoleModel>()
             .ForMember(d => d.RoleName, m => m.MapFrom(s => s.Name));

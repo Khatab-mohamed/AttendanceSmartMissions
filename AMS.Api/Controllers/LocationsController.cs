@@ -54,15 +54,19 @@ public class LocationsController : ControllerBase
     
     
     [HttpPut]
-    public async Task<IActionResult> UpdateLocation(CreationLocationDto creationLocationDto)
+    public async Task<IActionResult> UpdateLocation(UpdateLocationDto locationDto)
     {
-        if (creationLocationDto is null) 
+        if (locationDto is null) 
             return BadRequest("Invalid Location");
-       
 
-        var location = await _locationService.AddAsync(creationLocationDto).ConfigureAwait(false);
 
-        return Ok(location);
+        var location =  _locationService.IsExists(locationDto.Id);
+        if (!location)
+            return BadRequest(new ResponseDto { Status = "Failed", Message = "Location does not exists" });
+        var result = _locationService.UpdateLocationAsync(locationDto);
+        return Ok(
+            result ? new ResponseDto{Status = "Success",Message = $" {locationDto.Name} Deleted Successfully"} 
+            : new ResponseDto{Status = "Failed",Message = $"Can not Delete {locationDto.Name} From Locations"});
     }
 
     [HttpDelete("{id:guid}")]

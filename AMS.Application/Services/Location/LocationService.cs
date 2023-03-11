@@ -46,6 +46,15 @@ public class LocationService : ILocationService
             return  _mapper.Map<LocationDto>(locationEntity);
     }
 
+    public bool UpdateLocationAsync(UpdateLocationDto location)
+    {
+        if (location == null) 
+            throw new ArgumentNullException(nameof(location));
+        var  locationToAdd=   _mapper.Map<Domain.Entities.Location>(location);
+        _locationRepository.UpdateLocation(locationToAdd);
+        return _locationRepository.SaveAsync();
+    }
+
 
     public bool SaveAsync()
     {

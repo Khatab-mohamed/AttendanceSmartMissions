@@ -26,9 +26,9 @@ public class RoleService : IRoleService
         return rolesDto;
     }
 
-    public async Task CreateRoleAsync(CreateRoleDto createRoleDto)
+    public async Task CreateRoleAsync(RoleDto roleDto)
     {
-        var identityRole = _mapper.Map<Role>(createRoleDto);
+        var identityRole = _mapper.Map<Role>(roleDto);
         var result = await _roleManager.CreateAsync(identityRole);
 
         foreach (var error in result.Errors)

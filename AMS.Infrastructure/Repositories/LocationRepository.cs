@@ -26,11 +26,17 @@ public class LocationRepository : ILocationRepository
         await _context.Locations.AddAsync(location);
     }
 
+    public void UpdateLocation(Location location)
+    {
+        _context.Attach(location);
+        _context.Entry(location).State = EntityState.Modified;
+    }
+
     public void DeleteLocation(Guid locationId)
     {
         var location = _context.Locations.FirstOrDefault(l=>l.Id == locationId);
 
-        _context.Locations.Remove(location);
+        if (location != null) _context.Locations.Remove(location);
     }
 
     public bool SaveAsync()

@@ -2,6 +2,6 @@
 
 public class RoleDto
 {
-    public Guid Id { get; set; }
-    public string RoleName { get; set; }
+    [Required]
+    public string? RoleName { get; set; }
 }
