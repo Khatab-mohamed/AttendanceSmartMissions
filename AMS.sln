@@ -5,13 +5,15 @@ VisualStudioVersion = 17.5.33414.496
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AMS", "AMS", "{D6A553DA-E92D-4321-8ACA-36D30C48E979}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AMS.Api", "AMS.Api\AMS.Api.csproj", "{69366633-1DE0-4FAA-84BB-4B60AE4AD3AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AMS.Api", "AMS.Api\AMS.Api.csproj", "{69366633-1DE0-4FAA-84BB-4B60AE4AD3AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AMS.Application", "AMS.Application\AMS.Application.csproj", "{92DA6CFE-A44E-4507-8204-2CF6A770C5AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AMS.Application", "AMS.Application\AMS.Application.csproj", "{92DA6CFE-A44E-4507-8204-2CF6A770C5AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AMS.Domain", "AMS.Domain\AMS.Domain.csproj", "{F8140844-1F17-4B74-8554-528F8C1EEFA0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AMS.Domain", "AMS.Domain\AMS.Domain.csproj", "{F8140844-1F17-4B74-8554-528F8C1EEFA0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AMS.Infrastructure", "AMS.Infrastructure\AMS.Infrastructure.csproj", "{95FC6BD0-94C2-4948-A5E4-87A5F69459E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AMS.Infrastructure", "AMS.Infrastructure\AMS.Infrastructure.csproj", "{95FC6BD0-94C2-4948-A5E4-87A5F69459E3}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{29516DC9-B737-4F6D-AAF5-903ECEF0D1EB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +37,10 @@ Global
 		{95FC6BD0-94C2-4948-A5E4-87A5F69459E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95FC6BD0-94C2-4948-A5E4-87A5F69459E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95FC6BD0-94C2-4948-A5E4-87A5F69459E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29516DC9-B737-4F6D-AAF5-903ECEF0D1EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29516DC9-B737-4F6D-AAF5-903ECEF0D1EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29516DC9-B737-4F6D-AAF5-903ECEF0D1EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29516DC9-B737-4F6D-AAF5-903ECEF0D1EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
