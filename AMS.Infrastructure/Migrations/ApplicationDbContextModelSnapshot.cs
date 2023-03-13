@@ -87,6 +87,20 @@ namespace AMS.Infrastructure.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("2902b665-1190-4c70-9915-b9c2d7680450"),
+                            Name = "Super Admin",
+                            NormalizedName = "SUPER ADMIN"
+                        },
+                        new
+                        {
+                            Id = new Guid("05b65e59-52d5-404b-b110-369b6a5f1afa"),
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        });
                 });
 
             modelBuilder.Entity("AMS.Domain.Entities.Authentication.User", b =>
@@ -168,6 +182,26 @@ namespace AMS.Infrastructure.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("d28888e9-2ba9-473a-a40f-e38cb54f9b35"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "4b353509-21e8-4d6d-af14-26244d191915",
+                            DeviceSerialNumber = "123",
+                            Email = "admin@smartmissions.com",
+                            EmailConfirmed = false,
+                            FullName = "Khatab Mohamed",
+                            IDNumber = "123",
+                            IsActive = true,
+                            LockoutEnabled = false,
+                            PasswordHash = "AQAAAAIAAYagAAAAEMsDjElt2MdGemLnca9Qs1jY2Khk3Zt23Mm0hCgYqLKikzy4ItXX2WxJRcIxnetBeQ==",
+                            PhoneNumber = " +966581252650",
+                            PhoneNumberConfirmed = false,
+                            TwoFactorEnabled = false,
+                            UserName = "Khatab Mohamed"
+                        });
                 });
 
             modelBuilder.Entity("AMS.Domain.Entities.Incident", b =>

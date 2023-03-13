@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AMS.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230306235115_AddSuperAdmin")]
-    partial class AddSuperAdmin
+    [Migration("20230313104211_AdminAndRoles")]
+    partial class AdminAndRoles
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -94,17 +94,15 @@ namespace AMS.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("ad2267ef-5579-4cd0-8eb5-7635d57e4e1d"),
-                            ConcurrencyStamp = "c879cea6-7715-4630-9091-98bca275c94e",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
+                            Id = new Guid("2902b665-1190-4c70-9915-b9c2d7680450"),
+                            Name = "Super Admin",
+                            NormalizedName = "SUPER ADMIN"
                         },
                         new
                         {
-                            Id = new Guid("ef1551c0-439d-4557-91b3-68362533b294"),
-                            ConcurrencyStamp = "ef1551c0-439d-4557-91b3-68362533b294",
-                            Name = "Super Admin",
-                            NormalizedName = "SUPER ADMIN"
+                            Id = new Guid("05b65e59-52d5-404b-b110-369b6a5f1afa"),
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
                         });
                 });
 
@@ -191,23 +189,21 @@ namespace AMS.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("0485f3ff-ddd1-4535-96ca-58dad6369c98"),
+                            Id = new Guid("d28888e9-2ba9-473a-a40f-e38cb54f9b35"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2e2da04a-792b-4b63-ab95-d3307f8cbdad",
-                            DeviceSerialNumber = "00001111",
-                            Email = "khatap1@hotmail.com",
-                            EmailConfirmed = true,
+                            ConcurrencyStamp = "4b353509-21e8-4d6d-af14-26244d191915",
+                            DeviceSerialNumber = "123",
+                            Email = "admin@smartmissions.com",
+                            EmailConfirmed = false,
                             FullName = "Khatab Mohamed",
-                            IDNumber = "2537045755",
+                            IDNumber = "123",
                             IsActive = true,
                             LockoutEnabled = false,
-                            NormalizedEmail = "khatap1@hotmail.com",
-                            NormalizedUserName = "Administrator",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHAXHwYHdJZoVVPsui/peBipdT+EVGi486AfKki82ByOtMRn4DaswaPlJQab9WrKlw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMsDjElt2MdGemLnca9Qs1jY2Khk3Zt23Mm0hCgYqLKikzy4ItXX2WxJRcIxnetBeQ==",
+                            PhoneNumber = " +966581252650",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "",
                             TwoFactorEnabled = false,
-                            UserName = "khatap1@hotmail.com"
+                            UserName = "Khatab Mohamed"
                         });
                 });
 
@@ -385,13 +381,6 @@ namespace AMS.Infrastructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = new Guid("0485f3ff-ddd1-4535-96ca-58dad6369c98"),
-                            RoleId = new Guid("ef1551c0-439d-4557-91b3-68362533b294")
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
