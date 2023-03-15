@@ -45,7 +45,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy( name: corsOpenPolicy,
         corsPolicyBuilder =>
         {
-            corsPolicyBuilder.WithOrigins("http://smartmissions-001-site3.ftempurl.com")
+            corsPolicyBuilder.WithOrigins("http://smartmissions-001-site3.ftempurl.com", "http://localhost:4200")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials();

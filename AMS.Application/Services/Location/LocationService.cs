@@ -6,16 +6,13 @@ public class LocationService : ILocationService
 
     private readonly ILocationRepository _locationRepository;
     private readonly IMapper _mapper;
-    private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly IUserRepository _userRepository;
+
     public LocationService(
         ILocationRepository locationRepository,
-        IMapper mapper, IHttpContextAccessor httpContextAccessor, IUserRepository userRepository)
+        IMapper mapper)
     {
         _locationRepository = locationRepository;
         _mapper = mapper;
-        _userRepository = userRepository;
-        _httpContextAccessor = httpContextAccessor;
     }
 
     #endregion

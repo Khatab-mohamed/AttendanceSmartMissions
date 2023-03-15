@@ -21,7 +21,7 @@ namespace AMS.Api.Controllers
         public async Task<IActionResult> Post(CreateAttendance attendance)
         {
             if (attendance is null)
-                return BadRequest(new { Message = "Check The Location Please" });
+                return BadRequest(new ResponseDto {Status= "Failed",  Message = "Check The Location Please" });
             
             var userId = GetCurrentUserId();
             

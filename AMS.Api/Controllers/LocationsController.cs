@@ -13,11 +13,9 @@ public class LocationsController : ControllerBase
     #region Constructor
 
     private readonly ILocationService _locationService;
-    private readonly UserManager<User> _userManager;
-    public LocationsController(ILocationService locationService, UserManager<User> userManager)
+    public LocationsController(ILocationService locationService)
     {
         _locationService = locationService;
-        _userManager = userManager;
     }
 
 
