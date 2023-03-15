@@ -1,4 +1,6 @@
-﻿namespace AMS.Infrastructure.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace AMS.Infrastructure.Repositories;
 
 public class LocationRepository : ILocationRepository
 {
@@ -35,7 +37,8 @@ public class LocationRepository : ILocationRepository
 
     public void Update(Location location)
     {
-        _context.Update(location);
+        _context.Locations.Attach(location);
+
     }
 
     public void Delete(Guid locationId)

@@ -53,8 +53,21 @@ public class LocationService : ILocationService
     {
         if (location is null) 
             throw new ArgumentNullException(nameof(location));
-        var  locationToAdd=   _mapper.Map<Domain.Entities.Location>(location);
-        _locationRepository.Update(locationToAdd);
+        var locationToAdd = await _locationRepository.GetAsync(location.Id);
+        if (locationToAdd != null)
+        {
+            locationToAdd.Name = location.Name;
+            locationToAdd.Latitude= location.Latitude;
+            locationToAdd.Longitude= location.Longitude;
+            locationToAdd.Longitude = location.Longitude;
+            locationToAdd.IsPublic = location.IsPublic;
+            locationToAdd.StartDate = location.StartDate;
+            locationToAdd.EndDate = location.EndDate;
+            locationToAdd.AllowedDistance = location.AllowedDistance;
+
+            _locationRepository.Update(locationToAdd);
+        }
+
         return await _locationRepository.SaveAsync();
     }
 
