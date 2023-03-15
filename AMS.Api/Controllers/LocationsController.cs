@@ -7,16 +7,21 @@ namespace AMS.Api.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 [Authorize (AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-//[Authorize(Roles = "Super Admin")]
+[Authorize(Roles = "Super Admin,Admin")]
 public class LocationsController : ControllerBase
 {
-    private  readonly  ILocationService _locationService;
-    private readonly UserManager<User> _userManager; 
+    #region Constructor
+
+    private readonly ILocationService _locationService;
+    private readonly UserManager<User> _userManager;
     public LocationsController(ILocationService locationService, UserManager<User> userManager)
     {
         _locationService = locationService;
         _userManager = userManager;
     }
+
+
+    #endregion
 
     [HttpGet]
     public async Task<IActionResult> GetLocation()
@@ -30,11 +35,11 @@ public class LocationsController : ControllerBase
 
     public async Task<IActionResult> GetLocationById(Guid id)
     {
-        var exists =  _locationService.IsExists(id);
+        var exists = await  _locationService.IsExistsAsync(id);
         if (!exists)
             return BadRequest(new ResponseDto { Status = "Failed", Message = "Location Not Found" });
 
-        var location = await _locationService.GetLocationAsync(id);
+        var location = await _locationService.GetAsync(id);
 
         return Ok(location);
     }
@@ -47,35 +52,50 @@ public class LocationsController : ControllerBase
             return BadRequest("Invalid Location");
        
 
-        var location = await _locationService.AddAsync(creationLocationDto).ConfigureAwait(false);
+        var result = await _locationService.AddAsync(creationLocationDto).ConfigureAwait(false);
 
-        return Ok(location);
+        if (!result)
+            return BadRequest(new ResponseDto { Status = "Failed", Message = "Can not Add This Location" });
+
+
+        return Ok(new ResponseDto { Status = "Success", Message = $"Location Added Successfully" });
     }
     
     
     [HttpPut]
-    public async Task<IActionResult> UpdateLocation(UpdateLocationDto locationDto)
+    public async Task<IActionResult> UpdateLocation(UpdateLocationDto? locationDto)
     {
         if (locationDto is null) 
             return BadRequest("Invalid Location");
 
 
-        var location =  _locationService.IsExists(locationDto.Id);
+        var location = await  _locationService.IsExistsAsync(locationDto.Id);
         if (!location)
             return BadRequest(new ResponseDto { Status = "Failed", Message = "Location does not exists" });
-        var result = _locationService.UpdateLocationAsync(locationDto);
-        return Ok(
-            result ? new ResponseDto{Status = "Success",Message = $" {locationDto.Name} Deleted Successfully"} 
-            : new ResponseDto{Status = "Failed",Message = $"Can not Delete {locationDto.Name} From Locations"});
+        var result = await _locationService.UpdateLocationAsync(locationDto);
+        
+        if (!result)
+            return BadRequest(new ResponseDto { Status = "Failed", Message = "Updating Failed on save" });
+
+     
+        return Ok( new ResponseDto{Status = "Success",Message = $"Location Updated Successfully"}); 
     }
 
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> DeleteLocation(Guid id)
     {
-        var locations = await _locationService.GetLocations();
-        var result = _locationService.DeleteLocation(id);
 
-        return Ok();
+        var location = await _locationService.IsExistsAsync(id);
+        if (!location)
+            return BadRequest(new ResponseDto { Status = "Failed", Message = "Location does not exists" });
+
+        var result = await _locationService.DeleteAsync(id);
+
+        if (!result)
+            return BadRequest(new ResponseDto { Status = "Failed", Message = "Can not Delete This Location" });
+
+
+        return Ok(new ResponseDto { Status = "Success", Message = $"Location Deleted Successfully" });
     }
 
 }

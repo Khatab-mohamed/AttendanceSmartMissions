@@ -7,8 +7,15 @@ public class LocationRepository : ILocationRepository
     public LocationRepository(ApplicationDbContext context) => _context = context;
 
     #endregion
+   
+    
+    public async Task<bool> IsExistAsync(Guid id)
+    {
+        return await _context.Locations.AnyAsync(a => a.Id == id);
+    }
 
-    public async Task<IEnumerable<Location>> GetLocations()
+
+    public async Task<IEnumerable<Location>> GetAsync()
     {
         var locations = await _context.Locations.ToListAsync();
         return locations;
@@ -21,31 +28,27 @@ public class LocationRepository : ILocationRepository
 
     }
 
-    public async Task CreateLocation(Location location)
+    public void  Add(Location location)
     {
-        await _context.Locations.AddAsync(location);
+         _context.Locations.Add(location);
     }
 
-    public void UpdateLocation(Location location)
+    public void Update(Location location)
     {
-        _context.Attach(location);
-        _context.Entry(location).State = EntityState.Modified;
+        _context.Update(location);
     }
 
-    public void DeleteLocation(Guid locationId)
+    public void Delete(Guid locationId)
     {
         var location = _context.Locations.FirstOrDefault(l=>l.Id == locationId);
 
         if (location != null) _context.Locations.Remove(location);
     }
 
-    public bool SaveAsync()
+    public async Task<bool> SaveAsync()
     {
-        return (_context.SaveChanges() >= 0);
+        return (await _context.SaveChangesAsync() >= 0);
     }
 
-    public bool IsExist(Guid id)
-    {
-       return _context.Locations.Any(a => a.Id == id);
-    }
+    
 }

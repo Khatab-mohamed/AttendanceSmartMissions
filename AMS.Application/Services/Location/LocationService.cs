@@ -20,72 +20,50 @@ public class LocationService : ILocationService
 
     #endregion
 
-
+    public async Task<bool> IsExistsAsync(Guid locationId)
+    {
+        return await _locationRepository.IsExistAsync(locationId);
+    }
+    
     public async Task<IEnumerable<LocationDto>> GetLocations()
     {
-        var locations = await _locationRepository.GetLocations();
+        var locations = await _locationRepository.GetAsync();
         var locationsDto = _mapper.Map<IEnumerable< LocationDto >>(locations);
         return locationsDto;
     }
 
-    public async Task<LocationDto> GetLocationAsync(Guid id)
+    public async Task<LocationDto> GetAsync(Guid id)
     {
         var location = await _locationRepository.GetAsync(id);
         var locationDto =  _mapper.Map<LocationDto>(location);
         return locationDto;
     }
 
-    public async Task<LocationDto> AddAsync(CreationLocationDto creationLocation)
+    public async Task<bool> AddAsync(CreationLocationDto creationLocation)
     {
         var locationEntity = _mapper.Map<Domain.Entities.Location>(creationLocation);
 
         locationEntity.CreatedOn = DateTime.UtcNow;
-        await _locationRepository.CreateLocation(locationEntity);
+        _locationRepository.Add(locationEntity);
         
-        var result = _locationRepository.SaveAsync();
-            return  _mapper.Map<LocationDto>(locationEntity);
+      return await _locationRepository.SaveAsync();
     }
 
-    public bool UpdateLocationAsync(UpdateLocationDto location)
+    public async Task<bool> UpdateLocationAsync(UpdateLocationDto? location)
     {
-        if (location == null) 
+        if (location is null) 
             throw new ArgumentNullException(nameof(location));
         var  locationToAdd=   _mapper.Map<Domain.Entities.Location>(location);
-        _locationRepository.UpdateLocation(locationToAdd);
-        return _locationRepository.SaveAsync();
+        _locationRepository.Update(locationToAdd);
+        return await _locationRepository.SaveAsync();
     }
 
 
-    public bool SaveAsync()
+    public async Task<bool> DeleteAsync(Guid locationId)
     {
-        return _locationRepository.SaveAsync();
+        _locationRepository.Delete(locationId);
+
+        return await _locationRepository.SaveAsync();
     }
-
-    public Task DeleteLocation(Guid locationId)
-    {
-        _locationRepository.DeleteLocation(locationId);
-
-        if (!_locationRepository.SaveAsync())
-            throw new Exception($"Deleting creationLocation {locationId} failed on save.");
-        
-        return Task.CompletedTask;
-    }
-    public bool IsExists(Guid locationId)
-    {
-        return _locationRepository.IsExist(locationId);
-    }
-
-
-
-    /*public LocationDto GetLocation(Guid locationId)
-    {
-
-        var creationLocation = _locationRepository.GetLocation(locationId);
-        var locationToReturn = _mapper.Map<LocationDto>(creationLocation);
-        return locationToReturn;
-    }
-
-   
-
-  */
+    
 }

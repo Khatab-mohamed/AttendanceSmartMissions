@@ -3,12 +3,13 @@
 public interface ILocationService
 
 {
+    Task<bool> IsExistsAsync(Guid locationId);
     Task<IEnumerable<LocationDto>> GetLocations();
-    Task<LocationDto> GetLocationAsync(Guid id);
-    bool IsExists(Guid locationId);
-    Task DeleteLocation(Guid locationId);
-    Task<LocationDto> AddAsync(CreationLocationDto creationLocation);
-    bool UpdateLocationAsync(UpdateLocationDto location);
-    
-    bool SaveAsync();
+    Task<LocationDto> GetAsync(Guid id);
+    Task<bool> AddAsync(CreationLocationDto creationLocation);
+
+    Task<bool> DeleteAsync(Guid id);
+    Task<bool> UpdateLocationAsync(UpdateLocationDto? location);
+
+
 }
