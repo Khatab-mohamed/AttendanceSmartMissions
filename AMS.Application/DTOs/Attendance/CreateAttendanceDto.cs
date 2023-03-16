@@ -1,7 +1,4 @@
-﻿using AMS.Domain.Entities.Helpers;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace AMS.Application.DTOs.Attendance;
+﻿namespace AMS.Application.DTOs.Attendance;
 
 public class CreateAttendance
 {

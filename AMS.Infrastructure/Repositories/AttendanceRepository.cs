@@ -16,6 +16,14 @@ public class AttendanceRepository : IAttendanceRepository
         await  _context.Attendances.AddAsync(attendance);
     }
 
+    public async Task<IEnumerable<Attendance>> GetAttendances(Guid userId)
+    {
+        var attendances = await _context.Attendances
+            .Where(a => a.UserId == userId)
+            .OrderBy(a => a.CreatedOn).Include(a=>a.Location).ToListAsync();
+        return attendances;
+    }
+
     public bool SaveAsync()
     {
         return (_context.SaveChanges() >= 0);

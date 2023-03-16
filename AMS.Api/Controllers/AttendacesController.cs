@@ -1,8 +1,4 @@
-﻿using AMS.Application.DTOs.Attendance;
-using System.Security.Claims;
-using AMS.Application.Services.Attendance;
-
-namespace AMS.Api.Controllers
+﻿namespace AMS.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -27,27 +23,23 @@ namespace AMS.Api.Controllers
             
             var result =  await _attendanceService.CrateAttendance(userId, attendance);
 
-            if (result)
-            {
-                return CreatedAtRoute("GetRoute", new{});
-            }
-
-            return BadRequest(new ResponseDto{Status = "Failed",Message = "can not Create Location"});
+            if (result) 
+                return Ok(new ResponseDto { Status = "Success", Message = "Your Attendance Submitted Successfully" });
+                
+            return BadRequest(new ResponseDto { Status = "Failed", Message = "Your Attendance Failed" });
         }
 
 
         [HttpGet]
 
-        public async Task<IActionResult> Get( ResourceParameters.ResourceParameters  resourceParameters)
+        public async Task<IActionResult> GetUserAttendances()
         {
-            var result =  await _attendanceService.CrateAttendance(userId, attendance);
+            var userId = GetCurrentUserId();
+            var result =  await _attendanceService.GetAttendance(userId);
+            if (result is null)
+                return NoContent();
+            return Ok(result);
 
-            if (result)
-            {
-                return CreatedAtRoute("GetRoute", new{});
-            }
-
-            return BadRequest(new ResponseDto{Status = "Failed",Message = "can not Create Location"});#1#
         }
       
         private Guid GetCurrentUserId()

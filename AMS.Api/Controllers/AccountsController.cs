@@ -1,6 +1,4 @@
-﻿using System.Security.Claims;
-
-namespace AMS.Api.Controllers
+﻿namespace AMS.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

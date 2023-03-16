@@ -32,7 +32,6 @@
 
   <ItemGroup>
     <Folder Include="Persistence\Configurataions\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>
