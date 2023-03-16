@@ -14,14 +14,14 @@
         #endregion
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateAttendance attendance)
+        public async Task<IActionResult> Create(CreateAttendanceDto attendanceDto)
         {
-            if (attendance is null)
+            if (attendanceDto is null)
                 return BadRequest(new ResponseDto {Status= "Failed",  Message = "Check The Location Please" });
             
             var userId = GetCurrentUserId();
             
-            var result =  await _attendanceService.CrateAttendance(userId, attendance);
+            var result =  await _attendanceService.CrateAttendance(userId, attendanceDto);
 
             if (result) 
                 return Ok(new ResponseDto { Status = "Success", Message = "Your Attendance Submitted Successfully" });

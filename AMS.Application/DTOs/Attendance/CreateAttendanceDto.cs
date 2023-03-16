@@ -1,6 +1,6 @@
 ﻿namespace AMS.Application.DTOs.Attendance;
 
-public class CreateAttendance
+public class CreateAttendanceDto
 {
     [Required]
     public AttendanceType Type { get; set; }

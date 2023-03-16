@@ -15,14 +15,14 @@ public class AttendanceService : IAttendanceService
     #endregion
 
 
-    public async Task<bool> CrateAttendance(Guid userId, CreateAttendance attendanceDto)
+    public async Task<bool> CrateAttendance(Guid userId, CreateAttendanceDto attendanceDtoDto)
     {
         var attendance = new Domain.Entities.Attendance
         {
             IsActive = true,
-            AttendanceType = attendanceDto.Type,
+            AttendanceType = attendanceDtoDto.Type,
             UserId = userId,
-            LocationId = attendanceDto.LocationId,
+            LocationId = attendanceDtoDto.LocationId,
             CreatedBy = userId,
             CreatedOn = DateTime.Now,
             ModifiedBy = userId,
