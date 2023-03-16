@@ -1,9 +1,4 @@
-﻿using AMS.Domain.Entities.Locations;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-
-namespace AMS.Infrastructure.Persistence;
+﻿namespace AMS.Infrastructure.Persistence;
 
 public sealed class ApplicationDbContext :
     IdentityDbContext<User,

@@ -1,4 +1,6 @@
-﻿namespace AMS.Application.Profiles;
+﻿using AMS.Domain.Entities.Locations;
+
+namespace AMS.Application.Profiles;
 
 public class LocationsProfile : Profile
 {
@@ -9,6 +11,8 @@ public class LocationsProfile : Profile
             .ForMember(d =>d.Name, m => m.MapFrom(s => s.Name)).ReverseMap();
         CreateMap<CreationLocationDto, Location>().ReverseMap();
         CreateMap<UpdateLocationDto, Location>().ReverseMap();
+        
+        CreateMap<UserLocationDto, UserLocation>().ReverseMap();
 
     }
     

@@ -99,12 +99,33 @@ public class LocationsController : ControllerBase
     
     
     [HttpGet("User")]
+    [AllowAnonymous]
     public async Task<IActionResult> GetUserLocations()
     {
         var id = GetCurrentUserId();
         var locations = await _locationService.GetUsersLocation(id);
         return Ok(locations);
     }
+
+
+    [HttpPost("AddUserLocation")]
+    public async Task<IActionResult> RegisterUserLocation(UserLocationDto userLocationDto)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(new ResponseDto { Status = "Failed", Message = "Can not Assassin this Location for the Current User" });
+
+        // Check for location existence
+        var location = await _locationService.IsExistsAsync(userLocationDto.LocationId);
+        if (!location)
+            return BadRequest(new ResponseDto { Status = "Failed", Message = "Location does not exists" });
+
+
+        var result = _locationService.AddUserLocationAsync(userLocationDto);
+
+        return Ok(new ResponseDto { Status = "Success", Message = $"Location Added Successfully" });
+    }
+
+
     private Guid GetCurrentUserId()
     {
         return Guid.Parse(HttpContext.User.FindFirstValue("userId") ?? string.Empty);

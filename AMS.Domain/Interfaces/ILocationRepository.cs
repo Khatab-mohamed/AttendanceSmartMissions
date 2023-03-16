@@ -1,4 +1,6 @@
-﻿namespace AMS.Domain.Interfaces
+﻿using AMS.Domain.Entities.Locations;
+
+namespace AMS.Domain.Interfaces
 {
     public interface ILocationRepository
     {
@@ -10,5 +12,6 @@
         void Delete(Guid locationId);
         Task<bool> SaveAsync();
         Task<bool> IsExistAsync(Guid id);
+        void AddUserLocation(UserLocation userLocation);
     }
 }

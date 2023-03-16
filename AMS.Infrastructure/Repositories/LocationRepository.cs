@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace AMS.Infrastructure.Repositories;
+﻿namespace AMS.Infrastructure.Repositories;
 
 public class LocationRepository : ILocationRepository
 {
@@ -14,6 +12,11 @@ public class LocationRepository : ILocationRepository
     public async Task<bool> IsExistAsync(Guid id)
     {
         return await _context.Locations.AnyAsync(a => a.Id == id);
+    }
+
+    public async void AddUserLocation(UserLocation userLocation)
+    {
+       await _context.UserLocations.AddAsync(userLocation);
     }
 
 

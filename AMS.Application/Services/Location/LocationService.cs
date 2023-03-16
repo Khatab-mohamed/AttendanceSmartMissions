@@ -1,4 +1,6 @@
-﻿namespace AMS.Application.Services.Location;
+﻿using AMS.Domain.Entities.Locations;
+
+namespace AMS.Application.Services.Location;
 
 public class LocationService : ILocationService
 {
@@ -73,6 +75,13 @@ public class LocationService : ILocationService
         var locations = await _locationRepository.GetUserLocations(userId);
         var locationsDto = _mapper.Map<IEnumerable<LocationDto>>(locations);
         return locationsDto;
+    }
+
+    public async Task<bool> AddUserLocationAsync(UserLocationDto userLocationDto)
+    { 
+        var to =  _mapper.Map<UserLocation>(userLocationDto);
+        _locationRepository.AddUserLocation(to);
+        return await _locationRepository.SaveAsync();
     }
 
 
