@@ -3,9 +3,8 @@
     public class ResourceParameters
     {
         const int maxPageSize = 20;
-        public string MainCategory { get; set; }
-        public string SearchQuery { get; set; }
-        public int PageNumber { get; set; } = 1;
+        public string? Location { get; set; }
+       public int PageNumber { get; set; } = 1; 
 
         private int _pageSize = 10;
         public int PageSize
@@ -15,6 +14,6 @@
         }
 
         public string OrderBy { get; set; } = "Name";
-        public string Fields { get; set; }
+        public Guid UserId { get; set; }
     }
 }

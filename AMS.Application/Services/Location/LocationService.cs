@@ -68,6 +68,13 @@ public class LocationService : ILocationService
         return await _locationRepository.SaveAsync();
     }
 
+    public async Task<IEnumerable<LocationDto>> GetUsersLocation(Guid userId)
+    {
+        var locations = await _locationRepository.GetUserLocations(userId);
+        var locationsDto = _mapper.Map<IEnumerable<LocationDto>>(locations);
+        return locationsDto;
+    }
+
 
     public async Task<bool> DeleteAsync(Guid locationId)
     {

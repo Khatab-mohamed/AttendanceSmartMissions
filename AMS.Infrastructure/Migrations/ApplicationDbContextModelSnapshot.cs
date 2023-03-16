@@ -97,7 +97,7 @@ namespace AMS.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("05b65e59-52d5-404b-b110-369b6a5f1afa"),
+                            Id = new Guid("6a2ca113-9c3a-408d-b3c3-9907ce1a0fd7"),
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -188,19 +188,44 @@ namespace AMS.Infrastructure.Migrations
                         {
                             Id = new Guid("d28888e9-2ba9-473a-a40f-e38cb54f9b35"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4b353509-21e8-4d6d-af14-26244d191915",
+                            ConcurrencyStamp = "04abbe59-2ba2-45d8-8f0e-36ac83658ec1",
                             DeviceSerialNumber = "123",
                             Email = "admin@smartmissions.com",
-                            EmailConfirmed = false,
+                            EmailConfirmed = true,
                             FullName = "Khatab Mohamed",
                             IDNumber = "123",
                             IsActive = true,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEMsDjElt2MdGemLnca9Qs1jY2Khk3Zt23Mm0hCgYqLKikzy4ItXX2WxJRcIxnetBeQ==",
+                            NormalizedEmail = "ADMIN@SMARTMISSIONS.COM",
+                            NormalizedUserName = "KHATAB MOHAMED",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHxhdysMR0D5vPZVPurVor01e51ufTZzR9Il9AxV4Vx81Io7UhG/Tb2DkmDa2MYQ8Q==",
                             PhoneNumber = " +966581252650",
-                            PhoneNumberConfirmed = false,
+                            PhoneNumberConfirmed = true,
+                            SecurityStamp = "d28888e9-2ba9-473a-a40f-e38cb54f9b35",
                             TwoFactorEnabled = false,
                             UserName = "Khatab Mohamed"
+                        });
+                });
+
+            modelBuilder.Entity("AMS.Domain.Entities.Authentication.UserRole", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = new Guid("d28888e9-2ba9-473a-a40f-e38cb54f9b35"),
+                            RoleId = new Guid("2902b665-1190-4c70-9915-b9c2d7680450")
                         });
                 });
 
@@ -296,6 +321,21 @@ namespace AMS.Infrastructure.Migrations
                     b.ToTable("Locations");
                 });
 
+            modelBuilder.Entity("AMS.Domain.Entities.Locations.UserLocation", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("LocationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("UserId", "LocationId");
+
+                    b.HasIndex("LocationId");
+
+                    b.ToTable("UserLocations");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
@@ -365,21 +405,6 @@ namespace AMS.Infrastructure.Migrations
                     b.ToTable("AspNetUserLogins", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
-                {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetUserRoles", (string)null);
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
                     b.Property<Guid>("UserId")
@@ -445,7 +470,41 @@ namespace AMS.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("AMS.Domain.Entities.Authentication.UserRole", b =>
+                {
+                    b.HasOne("AMS.Domain.Entities.Authentication.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AMS.Domain.Entities.Authentication.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("AMS.Domain.Entities.Incident", b =>
+                {
+                    b.HasOne("AMS.Domain.Entities.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AMS.Domain.Entities.Authentication.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Location");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AMS.Domain.Entities.Locations.UserLocation", b =>
                 {
                     b.HasOne("AMS.Domain.Entities.Location", "Location")
                         .WithMany()
@@ -484,21 +543,6 @@ namespace AMS.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.HasOne("AMS.Domain.Entities.Authentication.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
-                {
-                    b.HasOne("AMS.Domain.Entities.Authentication.Role", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("AMS.Domain.Entities.Authentication.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")

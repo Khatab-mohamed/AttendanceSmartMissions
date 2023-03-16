@@ -1,4 +1,5 @@
 ﻿using AMS.Domain.Entities.Helpers;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AMS.Application.DTOs.Attendance;
 

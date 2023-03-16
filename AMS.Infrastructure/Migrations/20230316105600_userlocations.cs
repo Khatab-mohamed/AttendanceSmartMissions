@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AMS.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class AdminAndRoles : Migration
+    public partial class userlocations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -252,19 +252,48 @@ namespace AMS.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "UserLocations",
+                columns: table => new
+                {
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LocationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserLocations", x => new { x.UserId, x.LocationId });
+                    table.ForeignKey(
+                        name: "FK_UserLocations_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserLocations_Locations_LocationId",
+                        column: x => x.LocationId,
+                        principalTable: "Locations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { new Guid("05b65e59-52d5-404b-b110-369b6a5f1afa"), null, "Admin", "ADMIN" },
-                    { new Guid("2902b665-1190-4c70-9915-b9c2d7680450"), null, "Super Admin", "SUPER ADMIN" }
+                    { new Guid("2902b665-1190-4c70-9915-b9c2d7680450"), null, "Super Admin", "SUPER ADMIN" },
+                    { new Guid("6a2ca113-9c3a-408d-b3c3-9907ce1a0fd7"), null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "DeviceSerialNumber", "Email", "EmailConfirmed", "FullName", "IDNumber", "IsActive", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { new Guid("d28888e9-2ba9-473a-a40f-e38cb54f9b35"), 0, "4b353509-21e8-4d6d-af14-26244d191915", "123", "admin@smartmissions.com", false, "Khatab Mohamed", "123", true, false, null, null, null, "AQAAAAIAAYagAAAAEMsDjElt2MdGemLnca9Qs1jY2Khk3Zt23Mm0hCgYqLKikzy4ItXX2WxJRcIxnetBeQ==", " +966581252650", false, null, false, "Khatab Mohamed" });
+                values: new object[] { new Guid("d28888e9-2ba9-473a-a40f-e38cb54f9b35"), 0, "04abbe59-2ba2-45d8-8f0e-36ac83658ec1", "123", "admin@smartmissions.com", true, "Khatab Mohamed", "123", true, false, null, "ADMIN@SMARTMISSIONS.COM", "KHATAB MOHAMED", "AQAAAAIAAYagAAAAEHxhdysMR0D5vPZVPurVor01e51ufTZzR9Il9AxV4Vx81Io7UhG/Tb2DkmDa2MYQ8Q==", " +966581252650", true, "d28888e9-2ba9-473a-a40f-e38cb54f9b35", false, "Khatab Mohamed" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { new Guid("2902b665-1190-4c70-9915-b9c2d7680450"), new Guid("d28888e9-2ba9-473a-a40f-e38cb54f9b35") });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -324,6 +353,11 @@ namespace AMS.Infrastructure.Migrations
                 name: "IX_Incidents_UserId",
                 table: "Incidents",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserLocations_LocationId",
+                table: "UserLocations",
+                column: "LocationId");
         }
 
         /// <inheritdoc />
@@ -349,6 +383,9 @@ namespace AMS.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Incidents");
+
+            migrationBuilder.DropTable(
+                name: "UserLocations");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

@@ -1,4 +1,5 @@
-﻿using AMS.Application.DTOs.Location;
+﻿using System.Security.Claims;
+using AMS.Application.DTOs.Location;
 using AMS.Application.Services.Location;
 
 
@@ -94,6 +95,19 @@ public class LocationsController : ControllerBase
 
 
         return Ok(new ResponseDto { Status = "Success", Message = $"Location Deleted Successfully" });
+    }
+    
+    
+    [HttpGet("User")]
+    public async Task<IActionResult> GetUserLocations()
+    {
+        var id = GetCurrentUserId();
+        var locations = await _locationService.GetUsersLocation(id);
+        return Ok(locations);
+    }
+    private Guid GetCurrentUserId()
+    {
+        return Guid.Parse(HttpContext.User.FindFirstValue("userId") ?? string.Empty);
     }
 
 }

@@ -11,5 +11,8 @@ public interface ILocationService
     Task<bool> DeleteAsync(Guid id);
     Task<bool> UpdateLocationAsync(UpdateLocationDto? location);
 
+    Task<IEnumerable<LocationDto>> GetUsersLocation(Guid userId);
+
+
 
 }

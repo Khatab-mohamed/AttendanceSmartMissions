@@ -1,11 +1,19 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AMS.Domain.Entities.Locations;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace AMS.Infrastructure.Persistence;
 
 public sealed class ApplicationDbContext :
-    IdentityDbContext<User, Role, Guid>
+    IdentityDbContext<User,
+        Role,
+        Guid
+        , IdentityUserClaim<Guid>
+        , UserRole
+        , IdentityUserLogin<Guid>
+        , IdentityRoleClaim<Guid>
+        , IdentityUserToken<Guid>>
 {
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> dbContextOptions)
@@ -26,8 +34,9 @@ public sealed class ApplicationDbContext :
     public DbSet<Location> Locations  { get; set; }
     public DbSet<Incident> Incidents { get; set; }
     public DbSet<Attendance> Attendances { get; set; }
+    public DbSet<UserLocation> UserLocations { get; set; }
 
-    /*
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         var hasher = new PasswordHasher<User>();
@@ -43,9 +52,15 @@ public sealed class ApplicationDbContext :
                 Email = "admin@smartmissions.com",
                 DeviceSerialNumber = "123",
                 IsActive = true,
+                EmailConfirmed = true,
                 IDNumber = "123",
                 PhoneNumber = " +966581252650",
-                PasswordHash = hasher.HashPassword(null, "AdminPassword"),
+                PasswordHash = hasher.HashPassword(new User(), "AdminPassword"),
+                NormalizedEmail = "admin@smartmissions.com".ToUpper(),
+                NormalizedUserName = "Khatab Mohamed".ToUpper(),
+                PhoneNumberConfirmed = true,
+                SecurityStamp = id.ToString(),
+                
             }
         );
 
@@ -61,32 +76,29 @@ public sealed class ApplicationDbContext :
                Id = Guid.NewGuid(),
                Name = "Admin",
                NormalizedName = "ADMIN"
+           },
+           new Role
+           {
+               Id = Guid.NewGuid(),
+               Name = "User",
+               NormalizedName = "USER"
            }
            );
 
-        /*modelBuilder.Entity<UserRole>().HasData(
+        modelBuilder.Entity<UserRole>().HasData(
            new UserRole
            {
                RoleId = roleId,
                UserId = id,
 
            }
-           );#1#
+           );
 
-        /*modelBuilder.Entity<UserRole>().HasData(
-            new UserRole
-            {
-                UserId = id,
-                RoleId = roleId
-            });
-
-        modelBuilder.Entity<IdentityUserRole<Guid>>().HasKey(p => new UserRole() { });
-        #1#
-
-
+        modelBuilder.Entity<UserRole>().HasKey(src=> new{src.RoleId,src.UserId });
+        modelBuilder.Entity<UserLocation>().HasKey(sc => new { sc.UserId, sc.LocationId });
         base.OnModelCreating(modelBuilder);
     }
-    */
+    
 
 
 }

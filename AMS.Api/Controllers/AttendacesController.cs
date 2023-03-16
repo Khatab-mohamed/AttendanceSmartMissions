@@ -18,7 +18,7 @@ namespace AMS.Api.Controllers
         #endregion
 
         [HttpPost]
-        public async Task<IActionResult> Post(CreateAttendance attendance)
+        public async Task<IActionResult> Create(CreateAttendance attendance)
         {
             if (attendance is null)
                 return BadRequest(new ResponseDto {Status= "Failed",  Message = "Check The Location Please" });
@@ -33,6 +33,21 @@ namespace AMS.Api.Controllers
             }
 
             return BadRequest(new ResponseDto{Status = "Failed",Message = "can not Create Location"});
+        }
+
+
+        [HttpGet]
+
+        public async Task<IActionResult> Get( ResourceParameters.ResourceParameters  resourceParameters)
+        {
+            var result =  await _attendanceService.CrateAttendance(userId, attendance);
+
+            if (result)
+            {
+                return CreatedAtRoute("GetRoute", new{});
+            }
+
+            return BadRequest(new ResponseDto{Status = "Failed",Message = "can not Create Location"});#1#
         }
       
         private Guid GetCurrentUserId()
