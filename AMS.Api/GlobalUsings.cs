@@ -14,5 +14,4 @@ global using Microsoft.AspNetCore.Identity;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.EntityFrameworkCore;
 global using AMS.Application.DTOs.Attendance;
-global using AMS.Application.ResourceParameters.Attendances;
 global using AMS.Application.Services.Attendance;

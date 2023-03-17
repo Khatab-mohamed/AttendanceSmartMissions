@@ -108,7 +108,7 @@ public class LocationsController : ControllerBase
     }
 
 
-    [HttpPost("AddUserLocationAsync")]
+    [HttpPost("AddUserLocation")]
     public async Task<IActionResult> RegisterUserLocation(UserLocationDto userLocationDto)
     {
         if (!ModelState.IsValid)

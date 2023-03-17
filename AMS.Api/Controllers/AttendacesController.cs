@@ -1,4 +1,6 @@
-﻿namespace AMS.Api.Controllers
+﻿using AMS.Domain.ResourceParameters.Attendances;
+
+namespace AMS.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -30,12 +32,11 @@
         }
 
 
-        [HttpGet]
-
-        public async Task<IActionResult> GetUserAttendances()
+        [HttpGet(Name = "GetAttendances")]
+        public async Task<IActionResult> GeAttendances([FromQuery]AttendanceResourceParameters attendanceResourceParameters)
         {
             var userId = GetCurrentUserId();
-            var result =  await _attendanceService.GetAttendance(userId);
+            var result =  await _attendanceService.GetAttendance(attendanceResourceParameters);
             if (result is null)
                 return NoContent();
             return Ok(result);
