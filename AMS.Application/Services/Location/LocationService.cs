@@ -80,7 +80,7 @@ public class LocationService : ILocationService
     public async Task<bool> AddUserLocationAsync(UserLocationDto userLocationDto)
     { 
         var to =  _mapper.Map<UserLocation>(userLocationDto);
-        _locationRepository.AddUserLocation(to);
+        await _locationRepository.AddUserLocationAsync(to);
         return await _locationRepository.SaveAsync();
     }
 

@@ -14,7 +14,7 @@ public class LocationRepository : ILocationRepository
         return await _context.Locations.AnyAsync(a => a.Id == id);
     }
 
-    public async void AddUserLocation(UserLocation userLocation)
+    public async Task AddUserLocationAsync(UserLocation userLocation)
     {
        await _context.UserLocations.AddAsync(userLocation);
     }

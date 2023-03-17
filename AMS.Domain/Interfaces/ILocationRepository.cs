@@ -12,6 +12,6 @@ namespace AMS.Domain.Interfaces
         void Delete(Guid locationId);
         Task<bool> SaveAsync();
         Task<bool> IsExistAsync(Guid id);
-        void AddUserLocation(UserLocation userLocation);
+        Task AddUserLocationAsync(UserLocation userLocation);
     }
 }

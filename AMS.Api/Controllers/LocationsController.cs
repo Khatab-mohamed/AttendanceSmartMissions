@@ -108,7 +108,7 @@ public class LocationsController : ControllerBase
     }
 
 
-    [HttpPost("AddUserLocation")]
+    [HttpPost("AddUserLocationAsync")]
     public async Task<IActionResult> RegisterUserLocation(UserLocationDto userLocationDto)
     {
         if (!ModelState.IsValid)
@@ -120,9 +120,12 @@ public class LocationsController : ControllerBase
             return BadRequest(new ResponseDto { Status = "Failed", Message = "Location does not exists" });
 
 
-        var result = _locationService.AddUserLocationAsync(userLocationDto);
+        var result = await _locationService.AddUserLocationAsync(userLocationDto);
+        if (!result)
+            return BadRequest(new ResponseDto { Status = "Failed", Message = "Adding User to the location failed" });
 
-        return Ok(new ResponseDto { Status = "Success", Message = $"Location Added Successfully" });
+
+        return Ok(new ResponseDto { Status = "Success", Message = $"User Added Successfully to this location" });
     }
 
 
