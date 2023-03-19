@@ -29,9 +29,9 @@ public class LocationRepository : ILocationRepository
 
     public async Task<IEnumerable<Location>> GetUserLocations(Guid userId)
     {
-        var locations = await  _context.UserLocations.
-            Where(u => u.UserId == userId)
-            .Select(l => l.Location)
+        var locations = await  _context.UserLocations
+            .Where(u => u.UserId == userId )
+            .Select(l => l.Location )
             .ToListAsync();
          return locations;
     }

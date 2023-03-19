@@ -1,4 +1,5 @@
-﻿using AMS.Domain.ResourceParameters.Attendances;
+﻿using AMS.Domain.Helpers;
+using AMS.Domain.ResourceParameters.Attendances;
 
 namespace AMS.Infrastructure.Repositories;
 
@@ -18,13 +19,14 @@ public class AttendanceRepository : IAttendanceRepository
         await  _context.Attendances.AddAsync(attendance);
     }
 
-    public async Task<IEnumerable<Attendance>> GetAttendances(AttendanceResourceParameters  attendanceResourceParameters)
+    public async Task<IEnumerable<Attendance>> GetMyAttendances(Guid userId)
     {
         var attendancesBeforePaging =  _context.Attendances
-            .Where(a => a.UserId == attendanceResourceParameters.UserId)
-            .OrderBy(a => a.CreatedOn).Include(a => a.Location).AsQueryable();
+            .Include(a => a.Location)
+            .Where(a => a.UserId == userId)
+            .OrderBy(a => a.CreatedOn).ToList();
 
-        if (!string.IsNullOrWhiteSpace(attendanceResourceParameters.Location))
+        /*if (!string.IsNullOrWhiteSpace(attendanceResourceParameters.Location))
         {
             // trim & ignore casing
             var locationQueryForWhereClause = attendanceResourceParameters.Location
@@ -33,12 +35,42 @@ public class AttendanceRepository : IAttendanceRepository
             attendancesBeforePaging= attendancesBeforePaging
                 .Where(a => a.Location.Name.ToLowerInvariant().Contains(locationQueryForWhereClause));
 
+        }*/
+        
+        
+        return attendancesBeforePaging.ToList();
+
+
+    }
+    
+    public  PagedList<Attendance> GetAttendances(Guid locationId, AttendanceResourceParameters  attendanceResourceParameters)
+    {
+        
+        var collection = _context.Attendances
+            .Where(a=>a.LocationId == locationId)
+            .Include(a=>a.Location)
+            as IQueryable<Attendance>;
+
+
+
+        if ((attendanceResourceParameters.From.HasValue))
+        {
+            // get property mapping dictionary
+            collection = collection
+                .Where(a => a.CreatedOn.Date >= attendanceResourceParameters.From.Value.Date);
+
         }
-        
-        
-        return attendancesBeforePaging;
 
+        if ((attendanceResourceParameters.To.HasValue))
+        {
+            // get property mapping dictionary
+            collection = collection
+                .Where(a => a.CreatedOn.Date <= attendanceResourceParameters.To.Value.Date);
+        }
 
+        return PagedList<Attendance>.Create(collection,
+            attendanceResourceParameters.PageNumber,
+            attendanceResourceParameters.PageSize);
     }
 
     public bool SaveAsync()

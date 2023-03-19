@@ -1,7 +1,4 @@
-﻿using AMS.Application.Common;
-using AMS.Domain.Entities.Authentication;
-
-namespace AMS.Application.Services.Authentication;
+﻿namespace AMS.Application.Services.Authentication;
 
 public class UserService : IUserService
 {
@@ -26,12 +23,13 @@ public class UserService : IUserService
 
     #endregion
 
-    public async Task Register(RegisterDto? userDto)
+    public async Task Register(RegisterDto userDto)
     {
         var user = _mapper.Map<User>(userDto);
 
         var result = await _userManager.CreateAsync(user, userDto.Password);
 
+        await _userManager.AddToRoleAsync(user, "User");
 
     }
 

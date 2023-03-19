@@ -35,12 +35,20 @@ public class AttendanceService : IAttendanceService
         return _attendanceRepository.SaveAsync();
     }
 
-    public async Task<IEnumerable<AttendanceDto>> GetAttendance(AttendanceResourceParameters attendanceResourceParameters)
+    public async Task<IEnumerable<AttendanceDto>> GetAttendance(Guid userId)
     {
        var attendances = await _attendanceRepository
-           .GetAttendances(attendanceResourceParameters);
+           .GetMyAttendances(userId);
        var attendancesToReturn = _mapper.Map<IEnumerable<AttendanceDto>>
            (attendances);
+       return attendancesToReturn;
+    }
+    public  IEnumerable<AttendanceDto> GetAttendance(Guid locationId,
+        AttendanceResourceParameters attendanceResourceParameters)
+    {
+       var attendances =  _attendanceRepository
+           .GetAttendances(locationId,attendanceResourceParameters);
+       var attendancesToReturn = _mapper.Map<IEnumerable<AttendanceDto>>(attendances);
        return attendancesToReturn;
     }
 }
