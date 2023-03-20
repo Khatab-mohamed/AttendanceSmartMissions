@@ -3,6 +3,7 @@
 global using System.Security.Claims;
 global using AMS.Application;
 global using AMS.Application.Common;
+global using AMS.Application.Common.Helper;
 global using AMS.Application.DTOs.Authentication;
 global using AMS.Application.DTOs.Authentication.Roles;
 global using AMS.Application.Services.Authentication;
@@ -15,3 +16,4 @@ global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.EntityFrameworkCore;
 global using AMS.Application.DTOs.Attendance;
 global using AMS.Application.Services.Attendance;
+global using AMS.Domain.ResourceParameters.Attendances;

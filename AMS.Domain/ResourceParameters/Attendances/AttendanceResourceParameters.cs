@@ -2,6 +2,7 @@
 
 public class AttendanceResourceParameters
 {
+    public string? SearchQuery { get; set; }
     const int maxPageSize = 30;
     public int PageNumber { get; set; } = 1;
     public int _pageSize = 10;

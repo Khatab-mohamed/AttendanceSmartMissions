@@ -1,6 +1,4 @@
-﻿using AMS.Domain.ResourceParameters.Attendances;
-
-namespace AMS.Api.Controllers;
+﻿namespace AMS.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -11,7 +9,14 @@ public class AttendancesController : ControllerBase
     #region Constructor
 
     private readonly IAttendanceService _attendanceService;
-    public AttendancesController(IAttendanceService attendanceService) => _attendanceService = attendanceService;
+    private readonly IUrlHelper _urlHelper;
+
+    public AttendancesController(IAttendanceService attendanceService,
+        IUrlHelper urlHelper)
+    {
+        _attendanceService = attendanceService;
+        _urlHelper = urlHelper;
+    }
 
     #endregion
 
@@ -33,23 +38,45 @@ public class AttendancesController : ControllerBase
 
 
     [HttpGet]
+    [Route("UserAttendance")]
+    [Authorize(Roles = "User")]
     public async Task<IActionResult> GeAttendances()
     {
         var userId = GetCurrentUserId();
 
 
-        var result =  await _attendanceService.GetAttendance(userId);
+        var result = await _attendanceService.GetAttendance(userId);
         if (result is null)
             return NoContent();
         return Ok(result);
 
     }
 
-    [HttpGet("{id}")]
+    [HttpGet(Name = "GetAttendances")]
     [Authorize(Roles = "Admin,Super Admin")]
-    public  IActionResult GeAttendances(Guid id, [FromQuery] AttendanceResourceParameters attendanceResourceParameters)
+    public  IActionResult GeAttendances([FromQuery]AttendanceResourceParameters attendanceResourceParameters)
     {
-        var result =  _attendanceService.GetAttendance(id,attendanceResourceParameters);
+        var result =  _attendanceService.GetAttendance(attendanceResourceParameters);
+        
+        
+        /*var previousPageLink = result.HasPrevious ?
+            CreateAttendancesResourceUri(attendanceResourceParameters,
+                ResourceUriType.PreviousPage) : null;
+
+        var nextPageLink = result.HasNext ?
+            CreateAttendancesResourceUri(attendanceResourceParameters,
+                ResourceUriType.NextPage) : null;*/
+
+        var paginationMetadata = new
+        {
+            totalCount = result.TotalCount,
+            pageSize = result.PageSize,
+            currentPage = result.CurrentPage,
+            totalPages = result.TotalPages
+        };
+
+        Response.Headers.Add("X-Pagination",
+            Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetadata));
 
         return Ok(result);
     }
@@ -58,4 +85,41 @@ public class AttendancesController : ControllerBase
     {
         return Guid.Parse(HttpContext.User.FindFirstValue("userId") ?? string.Empty);
     }
+    /*private string? CreateAttendancesResourceUri(
+        AttendanceResourceParameters attendanceResourceParameters,
+        ResourceUriType type)
+    {
+        switch (type)
+        { 
+            case ResourceUriType.PreviousPage:
+                return _urlHelper.Link("GetAttendances",
+                    new
+                    {
+                        from = attendanceResourceParameters.From,
+                        to = attendanceResourceParameters.To,
+                        pageNumber = attendanceResourceParameters.PageNumber - 1,
+                        pageSize = attendanceResourceParameters.PageSize
+                    });
+            case ResourceUriType.NextPage:
+                return _urlHelper.Link("GetAttendances",
+                    new
+                    {
+                        from = attendanceResourceParameters.From,
+                        to = attendanceResourceParameters.To,
+                        pageNumber = attendanceResourceParameters.PageNumber + 1,
+                        pageSize = attendanceResourceParameters.PageSize
+                    });
+
+            default:
+                return _urlHelper.Link("GetAttendances",
+                    new
+                    {
+                        from = attendanceResourceParameters.From,
+                        to = attendanceResourceParameters.To,
+                        pageNumber = attendanceResourceParameters.PageNumber,
+                        pageSize = attendanceResourceParameters.PageSize
+                    });
+        }
+    }*/
+
 }

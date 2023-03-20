@@ -43,16 +43,27 @@ public class AttendanceRepository : IAttendanceRepository
 
     }
     
-    public  PagedList<Attendance> GetAttendances(Guid locationId, AttendanceResourceParameters  attendanceResourceParameters)
+    public IQueryable<Attendance> GetAttendances(AttendanceResourceParameters 
+        attendanceResourceParameters)
     {
         
         var collection = _context.Attendances
-            .Where(a=>a.LocationId == locationId)
-            .Include(a=>a.Location)
+                .Include(a=>a.Location)
             as IQueryable<Attendance>;
 
 
 
+        if ((attendanceResourceParameters.SearchQuery is not null))
+        { // trim & ignore casing
+            var locationQueryForWhereClause = attendanceResourceParameters.SearchQuery
+                .Trim().ToLowerInvariant();
+
+            // get property mapping dictionary
+            collection = collection
+                .Where(a => a.Location.Name.Contains(locationQueryForWhereClause));
+
+        }
+        
         if ((attendanceResourceParameters.From.HasValue))
         {
             // get property mapping dictionary
@@ -68,9 +79,7 @@ public class AttendanceRepository : IAttendanceRepository
                 .Where(a => a.CreatedOn.Date <= attendanceResourceParameters.To.Value.Date);
         }
 
-        return PagedList<Attendance>.Create(collection,
-            attendanceResourceParameters.PageNumber,
-            attendanceResourceParameters.PageSize);
+        return collection;
     }
 
     public bool SaveAsync()

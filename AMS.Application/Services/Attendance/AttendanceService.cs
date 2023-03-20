@@ -1,4 +1,6 @@
-﻿namespace AMS.Application.Services.Attendance;
+﻿using AMS.Domain.Helpers;
+
+namespace AMS.Application.Services.Attendance;
 
 public class AttendanceService : IAttendanceService
 {
@@ -43,12 +45,17 @@ public class AttendanceService : IAttendanceService
            (attendances);
        return attendancesToReturn;
     }
-    public  IEnumerable<AttendanceDto> GetAttendance(Guid locationId,
-        AttendanceResourceParameters attendanceResourceParameters)
+    public PagedList<AttendanceDto> GetAttendance(AttendanceResourceParameters 
+        attendanceResourceParameters)
     {
-       var attendances =  _attendanceRepository
-           .GetAttendances(locationId,attendanceResourceParameters);
-       var attendancesToReturn = _mapper.Map<IEnumerable<AttendanceDto>>(attendances);
-       return attendancesToReturn;
+       var attendances = _attendanceRepository
+           .GetAttendances(attendanceResourceParameters);
+
+       var atToReturn = _mapper.Map<IEnumerable<AttendanceDto>>(attendances);
+
+        var attendancesToReturn = PagedList<AttendanceDto>.Create(atToReturn,
+           attendanceResourceParameters.PageNumber,
+           attendanceResourceParameters.PageSize);
+        return attendancesToReturn;
     }
 }

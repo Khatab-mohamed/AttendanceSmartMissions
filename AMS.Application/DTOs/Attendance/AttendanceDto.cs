@@ -1,6 +1,6 @@
 ﻿namespace AMS.Application.DTOs.Attendance;
 
-public class                                                                        AttendanceDto
+public class AttendanceDto
 {
     public Guid Id { get; set; }
     public Guid UserId { get; set; }

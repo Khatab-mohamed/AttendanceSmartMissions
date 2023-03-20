@@ -4,6 +4,6 @@ public interface IAttendanceRepository
 {
     Task CreateAsync(Attendance attendance);
     Task<IEnumerable<Attendance>> GetMyAttendances(Guid userId);
-    PagedList<Attendance> GetAttendances(Guid locationId, AttendanceResourceParameters attendanceResourceParameters);
+    IQueryable<Attendance> GetAttendances(AttendanceResourceParameters attendanceResourceParameters);
     bool SaveAsync();
 }
