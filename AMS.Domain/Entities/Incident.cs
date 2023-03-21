@@ -11,5 +11,7 @@ public class Incident  : Base
     public Guid LocationId { get; set; }
     public Location Location { get; set; }
 
-   
+    public Guid IncidentTypeId { get; set; }
+    public IncidentType IncidentType { get; set; }
+
 }

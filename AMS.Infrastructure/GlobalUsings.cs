@@ -9,6 +9,7 @@ global using AMS.Domain.Entities;
 global using AMS.Domain.Entities.Authentication;
 global using AMS.Domain.Entities.Locations;
 global using AMS.Domain.Interfaces;
+global using AMS.Domain.ResourceParameters.Attendances;
 global using AMS.Infrastructure.Authentication;
 global using AMS.Infrastructure.Persistence;
 global using AMS.Infrastructure.Repositories;

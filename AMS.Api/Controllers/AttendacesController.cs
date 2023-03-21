@@ -9,13 +9,12 @@ public class AttendancesController : ControllerBase
     #region Constructor
 
     private readonly IAttendanceService _attendanceService;
-    private readonly IUrlHelper _urlHelper;
+   
 
-    public AttendancesController(IAttendanceService attendanceService,
-        IUrlHelper urlHelper)
+    public AttendancesController(IAttendanceService attendanceService)
     {
         _attendanceService = attendanceService;
-        _urlHelper = urlHelper;
+    
     }
 
     #endregion

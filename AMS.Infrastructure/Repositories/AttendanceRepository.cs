@@ -1,11 +1,9 @@
-﻿using AMS.Domain.Helpers;
-using AMS.Domain.ResourceParameters.Attendances;
-
-namespace AMS.Infrastructure.Repositories;
+﻿namespace AMS.Infrastructure.Repositories;
 
 public class AttendanceRepository : IAttendanceRepository
 {
-    #region MyRegion
+    #region Constructor
+
 
 
     private readonly ApplicationDbContext _context;
@@ -19,26 +17,15 @@ public class AttendanceRepository : IAttendanceRepository
         await  _context.Attendances.AddAsync(attendance);
     }
 
-    public async Task<IEnumerable<Attendance>> GetMyAttendances(Guid userId)
+    public Task<IEnumerable<Attendance>> GetMyAttendances(Guid userId)
     {
         var attendancesBeforePaging =  _context.Attendances
             .Include(a => a.Location)
             .Where(a => a.UserId == userId)
             .OrderBy(a => a.CreatedOn).ToList();
 
-        /*if (!string.IsNullOrWhiteSpace(attendanceResourceParameters.Location))
-        {
-            // trim & ignore casing
-            var locationQueryForWhereClause = attendanceResourceParameters.Location
-                .Trim().ToLowerInvariant();
-            
-            attendancesBeforePaging= attendancesBeforePaging
-                .Where(a => a.Location.Name.ToLowerInvariant().Contains(locationQueryForWhereClause));
-
-        }*/
         
-        
-        return attendancesBeforePaging.ToList();
+        return Task.FromResult<IEnumerable<Attendance>>(attendancesBeforePaging.ToList());
 
 
     }
@@ -54,7 +41,8 @@ public class AttendanceRepository : IAttendanceRepository
 
 
         if ((attendanceResourceParameters.SearchQuery is not null))
-        { // trim & ignore casing
+        {
+            // trim & ignore casing
             var locationQueryForWhereClause = attendanceResourceParameters.SearchQuery
                 .Trim().ToLowerInvariant();
 

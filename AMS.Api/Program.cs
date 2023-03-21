@@ -40,14 +40,7 @@ builder.Services.AddSwaggerGen(option =>
         }
     });
 });
-builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
-builder.Services.AddScoped<IUrlHelper>(implementationFactory =>
-{
-    var actionContext = implementationFactory.GetService<IActionContextAccessor>()
-        .ActionContext;
-    return new UrlHelper(actionContext);
-});
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddCors(options =>

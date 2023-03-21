@@ -9,12 +9,13 @@ public class IncidentsController : ControllerBase
         
     }
 
+
     /*
     [HttpGet]
     public IActionResult GetIncidents()
     {
 
-    }
-    */
+    }*/
+
 
 }

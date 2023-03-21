@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Persistence\Configurataions\**" />
+    <EmbeddedResource Remove="Persistence\Configurataions\**" />
+    <None Remove="Persistence\Configurataions\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.3">
@@ -28,10 +34,6 @@
   <ItemGroup>
     <ProjectReference Include="..\AMS.Application\AMS.Application.csproj" />
     <ProjectReference Include="..\AMS.Domain\AMS.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Persistence\Configurataions\" />
   </ItemGroup>
 
 </Project>
