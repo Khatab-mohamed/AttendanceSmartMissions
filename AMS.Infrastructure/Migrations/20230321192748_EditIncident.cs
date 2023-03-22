@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AMS.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class userlocations : Migration
+    public partial class EditIncident : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -54,6 +54,18 @@ namespace AMS.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "IncidentTypes",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IncidentTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -172,11 +184,7 @@ namespace AMS.Infrastructure.Migrations
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -229,6 +237,7 @@ namespace AMS.Infrastructure.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LocationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -242,6 +251,12 @@ namespace AMS.Infrastructure.Migrations
                         name: "FK_Incidents_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Incidents_IncidentTypes_TypeId",
+                        column: x => x.TypeId,
+                        principalTable: "IncidentTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -282,13 +297,13 @@ namespace AMS.Infrastructure.Migrations
                 values: new object[,]
                 {
                     { new Guid("2902b665-1190-4c70-9915-b9c2d7680450"), null, "Super Admin", "SUPER ADMIN" },
-                    { new Guid("6a2ca113-9c3a-408d-b3c3-9907ce1a0fd7"), null, "Admin", "ADMIN" }
+                    { new Guid("5af7a692-fb67-4ce2-b910-606bf592aa55"), null, "User", "USER" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "DeviceSerialNumber", "Email", "EmailConfirmed", "FullName", "IDNumber", "IsActive", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { new Guid("d28888e9-2ba9-473a-a40f-e38cb54f9b35"), 0, "04abbe59-2ba2-45d8-8f0e-36ac83658ec1", "123", "admin@smartmissions.com", true, "Khatab Mohamed", "123", true, false, null, "ADMIN@SMARTMISSIONS.COM", "KHATAB MOHAMED", "AQAAAAIAAYagAAAAEHxhdysMR0D5vPZVPurVor01e51ufTZzR9Il9AxV4Vx81Io7UhG/Tb2DkmDa2MYQ8Q==", " +966581252650", true, "d28888e9-2ba9-473a-a40f-e38cb54f9b35", false, "Khatab Mohamed" });
+                values: new object[] { new Guid("d28888e9-2ba9-473a-a40f-e38cb54f9b35"), 0, "e5acc18f-74cb-4c48-b258-96b045a85255", "123", "admin@smartmissions.com", true, "Khatab Mohamed", "123", true, false, null, "ADMIN@SMARTMISSIONS.COM", "KHATAB MOHAMED", "AQAAAAIAAYagAAAAEIOUm3tAYhkCCcKAXC52RXaR8kWKu6NZ+TDKZgaqCMrsQHciof49at7LBuKdbnWzlg==", " +966581252650", true, "d28888e9-2ba9-473a-a40f-e38cb54f9b35", false, "Khatab Mohamed" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -350,6 +365,11 @@ namespace AMS.Infrastructure.Migrations
                 column: "LocationId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Incidents_TypeId",
+                table: "Incidents",
+                column: "TypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Incidents_UserId",
                 table: "Incidents",
                 column: "UserId");
@@ -389,6 +409,9 @@ namespace AMS.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "IncidentTypes");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

@@ -24,6 +24,7 @@ public static class DependencyInjection
 
         services.AddScoped<ILocationRepository, LocationRepository>();
         services.AddScoped<IAttendanceRepository, AttendanceRepository>();
+        services.AddScoped<IIncidentsRepository, IncidentsRepository>();
 
         #endregion
 

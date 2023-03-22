@@ -11,7 +11,9 @@ public class Incident  : Base
     public Guid LocationId { get; set; }
     public Location Location { get; set; }
 
-    public Guid IncidentTypeId { get; set; }
-    public IncidentType IncidentType { get; set; }
+    public Guid TypeId { get; set; }
+
+    [ForeignKey("TypeId")] 
+    public virtual IncidentType IncidentType { get; set; }
 
 }

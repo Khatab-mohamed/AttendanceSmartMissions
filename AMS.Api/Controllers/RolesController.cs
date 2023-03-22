@@ -107,8 +107,8 @@ public class RolesController : ControllerBase
 
     }
 
-    [HttpPost]
-    [Route("RemoveUserFromRole")]
+    [HttpDelete]
+    [Route("RemoveUserRole")]
     public async Task<IActionResult> RemoveUserFromRole(AddUserRoleDto roleDto)
     {
         var user = await _userManager.FindByEmailAsync(roleDto.Email);

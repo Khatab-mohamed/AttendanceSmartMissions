@@ -25,9 +25,9 @@ public sealed class ApplicationDbContext :
 
 
     // Entities
-    public DbSet<ApplicationUserToken> ApplicationUserToken { get; set; }
     public DbSet<Location> Locations  { get; set; }
     public DbSet<Incident> Incidents { get; set; }
+    public DbSet<IncidentType> IncidentTypes { get; set; }
     public DbSet<Attendance> Attendances { get; set; }
     public DbSet<UserLocation> UserLocations { get; set; }
 
@@ -69,12 +69,6 @@ public sealed class ApplicationDbContext :
            new Role
            {
                Id = Guid.NewGuid(),
-               Name = "Admin",
-               NormalizedName = "ADMIN"
-           },
-           new Role
-           {
-               Id = Guid.NewGuid(),
                Name = "User",
                NormalizedName = "USER"
            }
@@ -86,10 +80,9 @@ public sealed class ApplicationDbContext :
                RoleId = roleId,
                UserId = id,
 
-           }
-           );
+           });
 
-        modelBuilder.Entity<UserRole>().HasKey(src=> new{src.RoleId,src.UserId });
+      //  modelBuilder.Entity<UserRole>().HasKey(src=> new{src.RoleId,src.UserId });
         modelBuilder.Entity<UserLocation>().HasKey(sc => new { sc.UserId, sc.LocationId });
         base.OnModelCreating(modelBuilder);
     }

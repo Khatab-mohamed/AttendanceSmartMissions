@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AMS.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230316105600_userlocations")]
-    partial class userlocations
+    [Migration("20230321192748_EditIncident")]
+    partial class EditIncident
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -100,9 +100,9 @@ namespace AMS.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("6a2ca113-9c3a-408d-b3c3-9907ce1a0fd7"),
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
+                            Id = new Guid("5af7a692-fb67-4ce2-b910-606bf592aa55"),
+                            Name = "User",
+                            NormalizedName = "USER"
                         });
                 });
 
@@ -191,7 +191,7 @@ namespace AMS.Infrastructure.Migrations
                         {
                             Id = new Guid("d28888e9-2ba9-473a-a40f-e38cb54f9b35"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "04abbe59-2ba2-45d8-8f0e-36ac83658ec1",
+                            ConcurrencyStamp = "e5acc18f-74cb-4c48-b258-96b045a85255",
                             DeviceSerialNumber = "123",
                             Email = "admin@smartmissions.com",
                             EmailConfirmed = true,
@@ -201,7 +201,7 @@ namespace AMS.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@SMARTMISSIONS.COM",
                             NormalizedUserName = "KHATAB MOHAMED",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHxhdysMR0D5vPZVPurVor01e51ufTZzR9Il9AxV4Vx81Io7UhG/Tb2DkmDa2MYQ8Q==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIOUm3tAYhkCCcKAXC52RXaR8kWKu6NZ+TDKZgaqCMrsQHciof49at7LBuKdbnWzlg==",
                             PhoneNumber = " +966581252650",
                             PhoneNumberConfirmed = true,
                             SecurityStamp = "d28888e9-2ba9-473a-a40f-e38cb54f9b35",
@@ -264,6 +264,9 @@ namespace AMS.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("TypeId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
@@ -271,9 +274,26 @@ namespace AMS.Infrastructure.Migrations
 
                     b.HasIndex("LocationId");
 
+                    b.HasIndex("TypeId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Incidents");
+                });
+
+            modelBuilder.Entity("AMS.Domain.Entities.IncidentType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("IncidentTypes");
                 });
 
             modelBuilder.Entity("AMS.Domain.Entities.Location", b =>
@@ -419,39 +439,12 @@ namespace AMS.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUserToken<Guid>");
-
-                    b.UseTphMappingStrategy();
-                });
-
-            modelBuilder.Entity("AMS.Domain.Entities.Authentication.ApplicationUserToken", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RefreshToken")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasDiscriminator().HasValue("ApplicationUserToken");
                 });
 
             modelBuilder.Entity("AMS.Domain.Entities.Attendance", b =>
@@ -496,11 +489,19 @@ namespace AMS.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("AMS.Domain.Entities.IncidentType", "IncidentType")
+                        .WithMany("Incidents")
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("AMS.Domain.Entities.Authentication.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("IncidentType");
 
                     b.Navigation("Location");
 
@@ -560,6 +561,11 @@ namespace AMS.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("AMS.Domain.Entities.IncidentType", b =>
+                {
+                    b.Navigation("Incidents");
                 });
 #pragma warning restore 612, 618
         }

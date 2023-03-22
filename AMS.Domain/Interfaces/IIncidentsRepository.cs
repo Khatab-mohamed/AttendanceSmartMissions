@@ -14,6 +14,9 @@ public interface IIncidentsRepository
     Task<IEnumerable<Incident>> GetIncidentsAsync();
     Task<Incident?> GetIncidentAsync(Guid incident);
     void AddIncident(Incident incident);
-    void UpdateIncidentType(Incident incident);
+    void UpdateIncident(Incident incident);
     void DeleteIncident(Guid incident);
+
+    
+    Task<bool> SaveAsync();
 }

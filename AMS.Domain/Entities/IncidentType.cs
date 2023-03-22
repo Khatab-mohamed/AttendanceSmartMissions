@@ -7,4 +7,5 @@ public class IncidentType
     [Required]
     public string Name { get; set; }
 
+    public  IEnumerable<Incident> Incidents { get; set; }
 }
