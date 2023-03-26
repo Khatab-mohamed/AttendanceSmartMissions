@@ -1,4 +1,6 @@
-﻿namespace AMS.Domain.Entities;
+﻿using AMS.Domain.Entities.Locations;
+
+namespace AMS.Domain.Entities;
 
 public class Location :Base
 {
@@ -13,6 +15,6 @@ public class Location :Base
     public double Longitude { get; set; }
     public int AllowedDistance { get; set; }
     public bool IsPublic { get; set; }
-
+    public  List<UserLocation> UserLocations { get; set; }
 
 }

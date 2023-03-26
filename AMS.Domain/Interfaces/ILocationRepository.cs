@@ -13,5 +13,6 @@ namespace AMS.Domain.Interfaces
         Task<bool> SaveAsync();
         Task<bool> IsExistAsync(Guid id);
         Task AddUserLocationAsync(UserLocation userLocation);
+        Task RemoveUserLocationAsync(UserLocation userLocation);
     }
 }

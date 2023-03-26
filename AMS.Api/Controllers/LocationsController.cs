@@ -112,7 +112,7 @@ public class LocationsController : ControllerBase
     public async Task<IActionResult> RegisterUserLocation(UserLocationDto userLocationDto)
     {
         if (!ModelState.IsValid)
-            return BadRequest(new ResponseDto { Status = "Failed", Message = "Can not Assassin this Location for the Current User" });
+            return BadRequest(new ResponseDto { Status = "Failed", Message = "Can not Assign this Location for the Current User" });
 
         // Check for location existence
         var location = await _locationService.IsExistsAsync(userLocationDto.LocationId);
@@ -126,6 +126,26 @@ public class LocationsController : ControllerBase
 
 
         return Ok(new ResponseDto { Status = "Success", Message = $"User Added Successfully to this location" });
+    }
+
+    [HttpDelete("RemoveUserLocation")]
+    public async Task<IActionResult> RemoveUserLocation(UserLocationDto userLocationDto)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(new ResponseDto { Status = "Failed", Message = "Can not Assassin this Location for the Current User" });
+
+        // Check for location existence
+        var location = await _locationService.IsExistsAsync(userLocationDto.LocationId);
+        if (!location)
+            return BadRequest(new ResponseDto { Status = "Failed", Message = "Location does not exists" });
+
+
+        var result = await _locationService.RemoveUserLocationAsync(userLocationDto);
+        if (!result)
+            return BadRequest(new ResponseDto { Status = "Failed", Message = "Deleting User to the location failed" });
+
+
+        return Ok(new ResponseDto { Status = "Success", Message = $"User Deleted Successfully from this location" });
     }
 
 

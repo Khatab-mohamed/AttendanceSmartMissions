@@ -14,6 +14,7 @@ public interface ILocationService
     Task<IEnumerable<LocationDto>> GetUsersLocation(Guid userId);
 
     Task<bool> AddUserLocationAsync(UserLocationDto userLocationDto);
+    Task<bool> RemoveUserLocationAsync(UserLocationDto userLocationDto);
 
 
 

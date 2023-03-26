@@ -73,7 +73,7 @@
 
         public async Task<IActionResult> GetUserById(Guid id)
         {
-            var user = await _userManager.FindByIdAsync(id.ToString());
+            var user = await _userService.GetUserById(id);
             if (user is null)
                 return BadRequest(new ResponseDto {Status = "Failed", Message = "User Not Found"});
            

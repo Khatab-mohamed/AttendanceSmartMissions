@@ -84,6 +84,13 @@ public class LocationService : ILocationService
         return await _locationRepository.SaveAsync();
     }
 
+    public async Task<bool> RemoveUserLocationAsync(UserLocationDto userLocationDto)
+    {
+        var to = _mapper.Map<UserLocation>(userLocationDto);
+        await  _locationRepository.RemoveUserLocationAsync(to);
+        return await _locationRepository.SaveAsync();
+    }
+
 
     public async Task<bool> DeleteAsync(Guid locationId)
     {

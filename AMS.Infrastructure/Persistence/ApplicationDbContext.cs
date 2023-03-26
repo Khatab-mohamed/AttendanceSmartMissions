@@ -11,6 +11,7 @@ public sealed class ApplicationDbContext :
         , IdentityUserToken<Guid>>
 {
 
+
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> dbContextOptions)
         : base(dbContextOptions)
     {
@@ -29,7 +30,7 @@ public sealed class ApplicationDbContext :
     public DbSet<Incident> Incidents { get; set; }
     public DbSet<IncidentType> IncidentTypes { get; set; }
     public DbSet<Attendance> Attendances { get; set; }
-    public DbSet<UserLocation> UserLocations { get; set; }
+    public DbSet<UserLocation> LocationUser { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -83,8 +84,9 @@ public sealed class ApplicationDbContext :
            });
 
       //  modelBuilder.Entity<UserRole>().HasKey(src=> new{src.RoleId,src.UserId });
-        modelBuilder.Entity<UserLocation>().HasKey(sc => new { sc.UserId, sc.LocationId });
+        modelBuilder.Entity<UserLocation>().HasKey(sc => new { sc.LocationId, sc.UserId });
         base.OnModelCreating(modelBuilder);
+       
     }
     
 

@@ -1,4 +1,6 @@
-﻿namespace AMS.Infrastructure.Repositories;
+﻿using System.Linq;
+
+namespace AMS.Infrastructure.Repositories;
 
 public class LocationRepository : ILocationRepository
 {
@@ -16,7 +18,25 @@ public class LocationRepository : ILocationRepository
 
     public async Task AddUserLocationAsync(UserLocation userLocation)
     {
-       await _context.UserLocations.AddAsync(userLocation);
+        var user = await _context.Users.FindAsync(userLocation.UserId);
+        var location = await _context.Locations.FindAsync(userLocation.LocationId);
+        var userLocationToAdd = new UserLocation
+        {
+            Location = location,
+            User = user,
+            LocationId = userLocation.LocationId,
+            UserId = userLocation.UserId
+
+        };
+        if (location != null && user is not null)
+            _context.LocationUser.Add(userLocationToAdd);
+    }
+
+    public async  Task RemoveUserLocationAsync(UserLocation userLocation)
+    {
+        var user = await _context.Users.FindAsync(userLocation.UserId);
+        var location = await _context.Locations.FindAsync(userLocation.LocationId);
+       if (location != null) _context.LocationUser.Remove(userLocation);
     }
 
 
@@ -29,11 +49,14 @@ public class LocationRepository : ILocationRepository
 
     public async Task<IEnumerable<Location>> GetUserLocations(Guid userId)
     {
-        var locations = await  _context.UserLocations
-            .Where(u => u.UserId == userId )
-            .Select(l => l.Location )
+        var user = _context.Users.Find(userId);
+        
+        var locations = await  _context
+            .Locations
+            // .Where(l=>l.Users.Contains(user))
             .ToListAsync();
-         return locations;
+
+        return locations;
     }
 
 

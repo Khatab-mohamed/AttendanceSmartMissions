@@ -11,6 +11,8 @@ public class AttendancesProfile : Profile
                 m => m.MapFrom(s => s.Id))
             .ForMember(d => d.UserId,
                 m => m.MapFrom(s => s.UserId))
+            .ForMember(d => d.UserName,
+                m => m.MapFrom(s => s.User.FullName))
             .ForMember(d => d.LocationId,
                 m => m.MapFrom(s => s.LocationId))
             .ForMember(d => d.Type, 

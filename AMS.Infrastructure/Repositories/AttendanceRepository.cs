@@ -36,6 +36,7 @@ public class AttendanceRepository : IAttendanceRepository
         
         var collection = _context.Attendances
                 .Include(a=>a.Location)
+                .Include(a=>a.User)
             as IQueryable<Attendance>;
 
 
@@ -43,12 +44,14 @@ public class AttendanceRepository : IAttendanceRepository
         if ((attendanceResourceParameters.SearchQuery is not null))
         {
             // trim & ignore casing
-            var locationQueryForWhereClause = attendanceResourceParameters.SearchQuery
+            var queryForWhereClause = attendanceResourceParameters.SearchQuery
                 .Trim().ToLowerInvariant();
 
             // get property mapping dictionary
             collection = collection
-                .Where(a => a.Location.Name.Contains(locationQueryForWhereClause));
+                .Where(a => a.Location.Name.Contains(queryForWhereClause) 
+                            || a.User.FullName.ToLowerInvariant().Contains(queryForWhereClause) 
+                            || a.User.Email.ToLowerInvariant().Contains(queryForWhereClause));
 
         }
         

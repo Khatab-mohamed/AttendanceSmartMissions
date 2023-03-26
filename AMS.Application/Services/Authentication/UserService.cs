@@ -1,4 +1,6 @@
-﻿namespace AMS.Application.Services.Authentication;
+﻿using AMS.Domain.Entities.Authentication;
+
+namespace AMS.Application.Services.Authentication;
 
 public class UserService : IUserService
 {
@@ -79,13 +81,23 @@ public class UserService : IUserService
         await _userManager.UpdateAsync(user);
     }
 
-    public async  Task<UserDto> GetUserById(string id)
+    public async  Task<UserDto> GetUserById(Guid id)
     {
-        var user = await _userManager.FindByIdAsync(id);
-        if (user is null)
-            return null;
+        var user = await _userRepository.GetUserById(id);
 
-        var userToReturn = _mapper.Map<UserDto>(user);
+        var userToReturn = new UserDto()
+        {
+            Id = user.Id,
+            FullName = user.FullName,
+            Email = user.Email,
+            IsActive = user.IsActive,
+            IDNumber = user.IDNumber,
+            PhoneNumber = user.PhoneNumber,
+            Locations =user.UserLocations.Select(x => x.Location.Name).ToList()
+        };
+        if(user is not null)
+            userToReturn.Roles = _userManager.GetRolesAsync(user).Result.ToList(); ;
+            
         return userToReturn;
     }
 
@@ -98,9 +110,9 @@ public class UserService : IUserService
     {
         // Getting All  Users
 
-        var users = _userManager.Users.ToList();
+        var users = await _userRepository.GetAll();
         // Mapping
-        var userToReturn = _mapper.Map<IEnumerable<UserDto>>(users);
+        var usersToReturn = _mapper.Map<IEnumerable<UserDto>>(users);
 
         // Getting Users Roles
         if (users is not null)
@@ -108,17 +120,15 @@ public class UserService : IUserService
             foreach (var user in users)
             {
                 var userRoles = await _userManager.GetRolesAsync(user);
-                var userToAddRoles = userToReturn.First(u => u.Id == user.Id);
+                var userToAddRoles = usersToReturn.First(u => u.Id == user.Id);
                 if (userRoles.Count != 0)
-                {
-                   
-                        userToAddRoles.Roles =  _userManager.GetRolesAsync(user).Result.ToList();
-
+                { 
+                    userToAddRoles.Roles =  _userManager.GetRolesAsync(user).Result.ToList();
                 }
 
             }
         }
-        return userToReturn;
+        return usersToReturn;
     }
 
     public async Task UpdateUser(UserDto userDto)
