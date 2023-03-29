@@ -2,7 +2,7 @@
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize(Roles = "Super Admin,Admin")]
+//[Authorize]
 public class IncidentTypesController : ControllerBase
 {
     #region Constructor
@@ -14,7 +14,7 @@ public class IncidentTypesController : ControllerBase
 
 
     [HttpGet]
-    [Authorize(Roles = "Super Admin,Admin,User")]
+    [AllowAnonymous]
     public async Task<IActionResult> GetIncidentTypes()
     {
        var types = await _incidentTypeService.GetIncidentTypes();

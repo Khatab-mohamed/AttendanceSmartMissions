@@ -77,9 +77,22 @@ public class AttendancesController : ControllerBase
         Response.Headers.Add("X-Pagination",
             Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetadata));
 
-        return Ok(result);
+        return Ok(new{ result , paginationMetadata});
     }
+    [HttpGet]
+    [Route("MyReport")]
+    [Authorize(Roles = "User")]
+    public async Task<IActionResult> GeMyAttendances()
+    {
+        var userId = GetCurrentUserId();
 
+
+        var result = await _attendanceService.GetWorkHistory(userId);
+        if (result is null)
+            return NoContent();
+        return Ok(result);
+
+    }
     private Guid GetCurrentUserId()
     {
         return Guid.Parse(HttpContext.User.FindFirstValue("userId") ?? string.Empty);

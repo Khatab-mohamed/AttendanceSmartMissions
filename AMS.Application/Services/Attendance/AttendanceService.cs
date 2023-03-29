@@ -58,4 +58,9 @@ public class AttendanceService : IAttendanceService
            attendanceResourceParameters.PageSize);
         return attendancesToReturn;
     }
+
+    public Task<IEnumerable<WorkHistory>> GetWorkHistory(Guid userId)
+    {
+        return _attendanceRepository .GetWorkHistory(userId);
+    }
 }

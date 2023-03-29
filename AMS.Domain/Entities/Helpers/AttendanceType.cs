@@ -1,6 +1,11 @@
-﻿namespace AMS.Domain.Entities.Helpers;
+﻿using System.ComponentModel;
+
+namespace AMS.Domain.Entities.Helpers;
 public enum AttendanceType
 {
-    CheckIn=1,
-    CheckOut=0,
+    [Description("Check In")]
+    CheckIn =1,
+
+    [Description("Check Out")]
+    CheckOut = 0,
 }
