@@ -85,18 +85,23 @@ public class UserService : IUserService
     public async  Task<UserDto> GetUserById(Guid id)
     {
         var user = await _userRepository.GetUserById(id);
-        var locations = user.UserLocations.Select(x => 
-        new UserLocationsDto
+        if (user is not null)
         {
-            Id = x.Location.Id, 
-            Name = x.Location.Name 
-        }).ToList();
-   
-    var userToReturn =  _mapper.Map<UserDto>(user);
-        if(user is not null)
-            userToReturn.Roles = _userManager.GetRolesAsync(user).Result.ToList(); ;
-            
-        return userToReturn;
+            var locations = user.UserLocations.Select(x =>
+            new UserLocationsDto
+            {
+                Id = x.Location.Id,
+                Name = x.Location.Name
+            }).ToList();
+
+            var userToReturn = _mapper.Map<UserDto>(user);
+            if (user is not null)
+                userToReturn.Roles = _userManager.GetRolesAsync(user).Result.ToList(); ;
+
+            return userToReturn;
+
+        }
+        return null;
     }
 
     public Task Logout()
