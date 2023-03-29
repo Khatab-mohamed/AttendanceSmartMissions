@@ -2,7 +2,8 @@
 
 [Route("api/[controller]")]
 [ApiController]
-//[Authorize]
+[Authorize(Roles = "Super Admin")]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class IncidentTypesController : ControllerBase
 {
     #region Constructor

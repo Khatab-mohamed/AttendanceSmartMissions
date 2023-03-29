@@ -3,6 +3,7 @@
 [Route("api/[controller]")]
 [ApiController]
 [Authorize]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class IncidentsController : ControllerBase
 {
     #region Constructor

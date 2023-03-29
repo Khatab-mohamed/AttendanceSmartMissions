@@ -3,7 +3,6 @@
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    //[Authorize(Roles = "Super Admin,Admin")]
     public class AccountsController : ControllerBase
     {
         #region Constructor

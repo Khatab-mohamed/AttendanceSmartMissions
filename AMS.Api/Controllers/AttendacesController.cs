@@ -4,6 +4,7 @@
 [ApiController]
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [Authorize]
+
 public class AttendancesController : ControllerBase
 {
     #region Constructor
@@ -79,6 +80,7 @@ public class AttendancesController : ControllerBase
 
         return Ok(new{ result , paginationMetadata});
     }
+  
     [HttpGet]
     [Route("MyReport")]
     [Authorize(Roles = "User")]
