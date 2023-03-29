@@ -13,9 +13,17 @@ public class UsersProfile : Profile
         CreateMap<UpdateRoleDto, IdentityRole>();
         CreateMap<IdentityRole, RoleModel>()
             .ForMember(d => d.RoleName, m => m.MapFrom(s => s.Name));
+
         CreateMap<User, UserDto>()
-        .ForMember(u => u.Locations ,m =>m.MapFrom(s => s.UserLocations.Select(x=>x.Location.Name).ToList()))
-            .IgnoreAllPropertiesWithAnInaccessibleSetter().ReverseMap();
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FullName))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
+                .ForMember(dest => dest.IDNumber, opt => opt.MapFrom(src => src.IDNumber))
+                .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber))
+                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive))
+                //.ForMember(dest => dest.Roles, opt => opt.MapFrom(src => src.Roles))
+                .ForMember(dest => dest.Locations, opt => opt.MapFrom(src => src.UserLocations
+                .Select(ul => new UserLocationsDto { Id = ul.LocationId, Name = ul.Location.Name }).ToList()));
     }
     
 }

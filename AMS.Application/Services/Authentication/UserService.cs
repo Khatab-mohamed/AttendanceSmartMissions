@@ -1,4 +1,5 @@
-﻿using AMS.Domain.Entities.Authentication;
+﻿using AMS.Domain.Entities;
+using AMS.Domain.Entities.Authentication;
 
 namespace AMS.Application.Services.Authentication;
 
@@ -84,17 +85,14 @@ public class UserService : IUserService
     public async  Task<UserDto> GetUserById(Guid id)
     {
         var user = await _userRepository.GetUserById(id);
-
-        var userToReturn = new UserDto()
+        var locations = user.UserLocations.Select(x => 
+        new UserLocationsDto
         {
-            Id = user.Id,
-            FullName = user.FullName,
-            Email = user.Email,
-            IsActive = user.IsActive,
-            IDNumber = user.IDNumber,
-            PhoneNumber = user.PhoneNumber,
-            Locations =user.UserLocations.Select(x => x.Location.Name).ToList()
-        };
+            Id = x.Location.Id, 
+            Name = x.Location.Name 
+        }).ToList();
+   
+    var userToReturn =  _mapper.Map<UserDto>(user);
         if(user is not null)
             userToReturn.Roles = _userManager.GetRolesAsync(user).Result.ToList(); ;
             
